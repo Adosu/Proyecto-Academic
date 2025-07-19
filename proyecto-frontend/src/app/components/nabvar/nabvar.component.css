@@ -1,0 +1,65 @@
+.navbar {
+  background-color: #1c4587;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.navbar-logo {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  color: white;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.navbar-left a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 8px 12px;
+  position: relative;
+}
+
+.navbar-left a:hover {
+  background-color: white;
+  color: #1c4587;
+  text-decoration: none;
+  border-radius: 3px;
+}
+
+/* Solo muestra una línea blanca inferior al estar en la ruta activa */
+.navbar-left a.activo::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  background-color: white;
+  border-radius: 2px 2px 0 0;
+}
+
+.navbar-right a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 8px 12px;
+}
+
+.navbar-right a:hover {
+  background-color: white;
+  color: #1c4587;
+  text-decoration: none;
+  border-radius: 3px;
+}

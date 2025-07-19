@@ -1,0 +1,29 @@
+<div class="area-personal-container">
+  <h2 class="titulo">Área personal</h2>
+
+  <div class="contenido-linea-tiempo">
+    <div class="encabezado-linea-tiempo">
+      <h3 class="subtitulo">Línea de tiempo</h3>
+      <select [(ngModel)]="filtroSeleccionado" (change)="aplicarFiltro()">
+        <option value="todas">Todas</option>
+        <option value="atrasadas">Atrasadas</option>
+        <option value="7">Próximos 7 días</option>
+        <option value="30">Próximos 30 días</option>
+      </select>
+    </div>
+
+    <div *ngFor="let fecha of fechasOrdenadas" class="grupo-fecha">
+      <h4 class="fecha">{{ fecha | date:'fullDate':'':'es-EC' }}</h4>
+
+      <div *ngFor="let r of recordatoriosAgrupados[fecha]" class="item-recordatorio">
+        <div class="hora-icono">
+          <span class="hora">{{ r.hora }}</span>
+        </div>
+        <div class="detalle-recordatorio">
+          <div class="titulo-recordatorio">{{ r.titulo }}</div>
+          <div class="descripcion">{{ r.descripcion }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
