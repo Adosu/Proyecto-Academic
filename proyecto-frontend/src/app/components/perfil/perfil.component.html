@@ -1,0 +1,57 @@
+<div class="perfil-container" *ngIf="perfilForm">
+  <h2>Editar perfil</h2>
+
+  <div class="perfil-avatar">
+    <div class="avatar-circle">{{ getIniciales() }}</div>
+    <div class="perfil-nombre">
+      <h3>{{ f['apellido'].value }} {{ f['nombre'].value }}</h3>
+      <p>{{ f['correo'].value }}</p>
+    </div>
+  </div>
+
+  <form [formGroup]="perfilForm" (ngSubmit)="guardarCambios()">
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input id="nombre" type="text" formControlName="nombre" />
+      <div class="error" *ngIf="f['nombre'].touched && f['nombre'].invalid">
+        <small *ngIf="f['nombre'].errors?.['required']">El nombre es obligatorio.</small>
+        <small *ngIf="f['nombre'].errors?.['minlength']">Debe tener al menos 4 caracteres.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="apellido">Apellido</label>
+      <input id="apellido" type="text" formControlName="apellido" />
+      <div class="error" *ngIf="f['apellido'].touched && f['apellido'].invalid">
+        <small *ngIf="f['apellido'].errors?.['required']">El apellido es obligatorio.</small>
+        <small *ngIf="f['apellido'].errors?.['minlength']">Debe tener al menos 4 caracteres.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="correo">Correo</label>
+      <input id="correo" type="email" formControlName="correo" />
+      <div class="error" *ngIf="f['correo'].touched && f['correo'].invalid">
+        <small *ngIf="f['correo'].errors?.['required']">El correo es obligatorio.</small>
+        <small *ngIf="f['correo'].errors?.['email']">Formato de correo inválido.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="contrasena">Contraseña</label>
+      <input id="contrasena" type="password" formControlName="contrasena" />
+      <div class="error" *ngIf="f['contrasena'].touched && f['contrasena'].invalid">
+        <small *ngIf="f['contrasena'].errors?.['required']">La contraseña es obligatoria.</small>
+        <small *ngIf="f['contrasena'].errors?.['minlength']">Mínimo 8 caracteres.</small>
+        <small *ngIf="f['contrasena'].errors?.['invalidPassword']">
+          Debe tener una mayúscula, una minúscula, un número y un símbolo.
+        </small>
+      </div>
+    </div>
+
+    <div class="botones">
+      <button class="guardar-btn" type="submit" [disabled]="perfilForm.invalid">Guardar cambios</button>
+      <button class="eliminar-btn" type="button" (click)="eliminarUsuario()">Eliminar usuario</button>
+    </div>
+  </form>
+</div>

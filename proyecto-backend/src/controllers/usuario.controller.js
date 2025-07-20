@@ -1,6 +1,6 @@
 const service = require('../services/usuario.service');
 
-// 🔹 Obtener perfil por ID (autenticado)
+// Obtener perfil autenticado
 exports.getById = async (req, res) => {
   try {
     const data = await service.findById(req.user.idUsuario);
@@ -11,7 +11,7 @@ exports.getById = async (req, res) => {
   }
 };
 
-// 🔹 Insertar nuevo usuario
+// Insertar nuevo usuario
 exports.create = async (req, res) => {
   try {
     const data = await service.createUsuario(req.body);
@@ -21,22 +21,27 @@ exports.create = async (req, res) => {
   }
 };
 
-// 🔹 Modificar usuario
+// Modificar usuario autenticado
 exports.update = async (req, res) => {
   try {
-    const data = await service.updateUsuario(req.body);
-    res.json(data);
+    const idUsuario = req.user.idUsuario;
+    const usuarioModificado = await service.updateUsuario({
+      idUsuario,
+      ...req.body,
+      estado: req.body.estado || 'Activo' // por defecto
+    });
+    res.json(usuarioModificado);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-// 🔹 Eliminar usuario
+// Eliminar usuario autenticado
 exports.remove = async (req, res) => {
   try {
-    const { idUsuario } = req.body;
+    const idUsuario = req.user.idUsuario;
     const data = await service.deleteUsuario(idUsuario);
-    res.json({ mensaje: 'Usuario eliminado', data });
+    res.json({ mensaje: 'Usuario eliminado correctamente', data });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

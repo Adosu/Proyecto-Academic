@@ -5,7 +5,18 @@
     <a routerLink="/actividades" routerLinkActive="activo">Área personal</a>
     <a routerLink="/cursos" routerLinkActive="activo">Mis cursos</a>
   </div>
-  <div class="navbar-right">
-    <a (click)="logout()" style="cursor: pointer;">Cerrar sesión</a>
+
+  <div class="navbar-right" *ngIf="usuario">
+    <div class="usuario-dropdown" #menuDropdown (click)="toggleMenu()">
+      <div class="circulo-iniciales">{{ getIniciales(usuario.nombre, usuario.apellido) }}</div>
+      <span class="flecha">&#9662;</span>
+
+      <div class="dropdown-opciones" *ngIf="menuAbierto">
+        <a (click)="irAPerfil()">Perfil</a>
+        <a (click)="irARecordatorios()">Recordatorios</a>
+        <hr />
+        <a class="cerrar" (click)="logout()">Cerrar sesión</a>
+      </div>
+    </div>
   </div>
 </nav>

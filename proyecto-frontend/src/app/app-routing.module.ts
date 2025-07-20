@@ -5,11 +5,13 @@ import { ActividadesComponent } from './components/actividades/actividades.compo
 import { CursosComponent } from './components/cursos/cursos.component';
 import { DetalleMateriaComponent } from './components/detalle-materia/detalle-materia.component';
 import { LoginComponent } from './components/login/login.component';
+import { PerfilComponent } from './components/perfil/perfil.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+  { path: 'perfil', component: PerfilComponent, canActivate: [AuthGuard] },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'actividades', component: ActividadesComponent, canActivate: [AuthGuard] },
   { path: 'cursos', component: CursosComponent, canActivate: [AuthGuard] },

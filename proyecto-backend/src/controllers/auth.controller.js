@@ -3,13 +3,13 @@ const usuarioService = require('../services/usuario.service');
 require('dotenv').config();
 
 exports.login = async (req, res) => {
-    const { correo, contraseña } = req.body;
+    const { correo, contrasena } = req.body;
     try {
         const usuario = await usuarioService.findByCorreo(correo);
         if (!usuario) return res.status(401).json({ msg: 'Correo no encontrado' });
 
         // Comparación directa de texto plano
-        if (contraseña !== usuario.contraseña) {
+        if (contrasena !== usuario.contrasena) {
             return res.status(401).json({ msg: 'Contraseña incorrecta' });
         }
 

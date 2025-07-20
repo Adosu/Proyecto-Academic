@@ -9,7 +9,7 @@ import { Recordatorio, RecordatorioService } from '../../services/recordatorio.s
 })
 export class ActividadesComponent implements OnInit {
   recordatoriosAgrupados: { [fecha: string]: Recordatorio[] } = {};
-  filtroSeleccionado: string = '30';
+  filtroSeleccionado: string = '7';
 
   constructor(private recordatorioService: RecordatorioService) { }
 

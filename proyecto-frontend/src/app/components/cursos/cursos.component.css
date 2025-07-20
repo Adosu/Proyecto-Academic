@@ -1,5 +1,5 @@
 .cursos-container {
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 30px 20px;
   font-family: Arial, sans-serif;
@@ -8,19 +8,21 @@
 h2 {
   font-size: 28px;
   margin-bottom: 5px;
+  text-align: left;
 }
 
 p {
   font-size: 15px;
   color: #333;
   margin-bottom: 20px;
+  text-align: left;
 }
 
 .cursos-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  justify-content: center;
 }
 
 .curso-card {
@@ -29,10 +31,15 @@ p {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  width: 280px;        /* ✅ ANCHO FIJO */
-  height: 260px;       /* ✅ ALTO FIJO */
   display: flex;
   flex-direction: column;
+  height: 260px;
+  position: relative;
+  transition: box-shadow 0.3s ease;
+}
+
+.curso-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 
 .curso-imagen {
@@ -47,6 +54,7 @@ p {
   flex-direction: column;
   justify-content: space-between;
   flex-grow: 1;
+  position: relative;
 }
 
 .curso-titulo {
@@ -61,7 +69,6 @@ p {
 }
 
 .btn-cuaderno {
-  align-self: flex-start;
   padding: 8px 16px;
   font-size: 13px;
   color: white;
@@ -70,8 +77,49 @@ p {
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  align-self: flex-start;
 }
 
 .btn-cuaderno:hover {
   background-color: #001c3d;
+}
+
+/* Menú de 3 puntitos en la parte inferior derecha */
+.menu-container {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+}
+
+.menu-btn {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #003366;
+}
+
+.menu-opciones {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 6px 12px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  position: absolute;
+  bottom: 30px; /* despliega hacia arriba */
+  right: 0;
+  z-index: 10;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.menu-opciones li {
+  font-size: 14px;
+  color: #003366;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.menu-opciones li:hover {
+  text-decoration: underline;
 }
