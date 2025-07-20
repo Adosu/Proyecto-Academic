@@ -1,53 +1,6 @@
 import { Injectable } from '@angular/core';
-
-@Injectable({
-  providedIn: 'root'
-})
-
-export class MateriaService {
-
-  constructor() { 
-    console.log("Servicio listo para usar");
-  }
-
-  private materias: Materia[] = [
-    {
-      idMateria: 1,
-      nombreMateria: 'Administración de Bases de Datos',
-      cursoParalelo: 'Quinto A Diurna',
-      nombreDocente: 'Milton Rafael Valarezo Pardo',
-      horario: 'Lunes 07:30 - 09:30 y Jueves 07-30 - 09:30',
-      estado: 'Activo',
-      fechaRegistro: '2025-06-11'
-    },
-    {
-      idMateria: 2,
-      nombreMateria: 'Ingeniería de Software I',
-      cursoParalelo: 'Quinto A Diruna',
-      nombreDocente: 'John Patricio Orellana Preciado',
-      horario: 'Lunes 09:30 - 11:30 y Jueves 09-30 - 11:30',
-      estado: 'Activo',
-      fechaRegistro: '2025-06-11'
-    }
-  ];
-
-  getMaterias(){
-    return this.materias;
-  }
-
-  getMateriasId(id: number): Materia | undefined {
-    return this.materias.find(r => r.idMateria === id);
-  }
-
-  addMaterias(nuevo: Materia): void {
-    this.materias.push(nuevo);
-  }
-
-  removeMaterias(id: number): void {
-    this.materias = this.materias.filter(r => r.idMateria !== id);
-  }
-
-}
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface Materia {
   idMateria: number;
@@ -55,6 +8,43 @@ export interface Materia {
   cursoParalelo: string;
   nombreDocente: string;
   horario: string;
-  estado: string;
-  fechaRegistro: string;
+  imagenUrl: string;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class MateriaService {
+  private apiUrl = 'http://localhost:3000/api/materias';
+
+  constructor(private http: HttpClient) { }
+
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+  }
+
+  // GET: Lista de materias activas
+  getMaterias(): Observable<Materia[]> {
+    return this.http.get<Materia[]>(`${this.apiUrl}/listar`, {
+      headers: this.getHeaders()
+    });
+  }
+
+  // POST: Inscripción con clave
+  inscribirse(idMateria: number, clave: string) {
+    return this.http.post(`${this.apiUrl}/inscribirse`, { idMateria, clave }, {
+      headers: this.getHeaders()
+    });
+  }
+
+  // GET: Lista de materias por usuario
+  getMisCursos(): Observable<Materia[]> {
+    return this.http.get<Materia[]>(`${this.apiUrl}/mis-cursos`, {
+      headers: this.getHeaders()
+    });
+  }
+
 }

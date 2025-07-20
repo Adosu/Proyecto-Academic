@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +11,16 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'proyecto';
 
-  estaAutenticado(): boolean {
-    return typeof window !== 'undefined' && !!localStorage.getItem('token');
+  constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {}
+
+  mostrarNavbar(): boolean {
+    const esNavegador = isPlatformBrowser(this.platformId);
+    const rutaActual = this.router.url;
+    const esLogin = rutaActual === '/login';
+
+    if (!esNavegador) return false;
+
+    const token = localStorage.getItem('token');
+    return !!token && !esLogin;
   }
 }

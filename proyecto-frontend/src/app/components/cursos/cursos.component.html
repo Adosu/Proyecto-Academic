@@ -1,1 +1,17 @@
-<p>cursos works!</p>
+<div class="cursos-container">
+  <h2>Mis cursos</h2>
+  <p>Vista general de curso</p>
+
+  <div class="cursos-grid">
+    <div *ngFor="let materia of materias" class="curso-card">
+      <div class="curso-imagen" [ngStyle]="{ 'background-image': 'url(' + getImagenFondo(materia) + ')' }"></div>
+
+      <div class="curso-info">
+        <div class="curso-titulo">
+          {{ materia.nombreMateria }} - {{ materia.cursoParalelo }} - {{ materia.nombreDocente }}
+        </div>
+        <button class="btn-cuaderno">Cuaderno virtual</button>
+      </div>
+    </div>
+  </div>
+</div>

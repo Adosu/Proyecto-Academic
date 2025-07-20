@@ -33,3 +33,18 @@ h2 {
 .agregar-btn:hover {
   background-color: #001c3d;
 }
+
+.input-clave {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.input-clave:focus {
+  border-color: #003366;
+}

@@ -14,5 +14,14 @@
     <strong>Horario:</strong> {{ materiaSeleccionada.horario }}
   </div>
 
+  <div class="detalle-item">
+    <strong>Clave:</strong>
+    <input class="input-clave" type="text" [(ngModel)]="clave" />
+  </div>
+
   <button class="agregar-btn" (click)="inscripcion()">Inscripción</button>
+
+  <div *ngIf="mensaje" class="detalle-item" [ngStyle]="{ color: esError ? 'red' : 'green' }" style="margin-top: 10px;">
+    {{ mensaje }}
+  </div>
 </div>
