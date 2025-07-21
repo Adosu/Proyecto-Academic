@@ -16,11 +16,11 @@ export class AppComponent {
   mostrarNavbar(): boolean {
     const esNavegador = isPlatformBrowser(this.platformId);
     const rutaActual = this.router.url;
-    const esLogin = rutaActual === '/login';
+    const esRutaPublica = ['/login', '/registro'].includes(rutaActual);
 
     if (!esNavegador) return false;
 
     const token = localStorage.getItem('token');
-    return !!token && !esLogin;
+    return !!token && !esRutaPublica;
   }
 }

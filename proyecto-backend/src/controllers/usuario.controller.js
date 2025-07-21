@@ -14,7 +14,13 @@ exports.getById = async (req, res) => {
 // Insertar nuevo usuario
 exports.create = async (req, res) => {
   try {
-    const data = await service.createUsuario(req.body);
+    const datos = {
+      ...req.body,
+      estado: 'Activo',
+      fechaRegistro: new Date().toISOString().split('T')[0]
+    };
+
+    const data = await service.createUsuario(datos);
     res.status(201).json(data);
   } catch (err) {
     res.status(500).json({ error: err.message });

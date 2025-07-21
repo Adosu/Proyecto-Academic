@@ -19,6 +19,8 @@ import { ActividadesComponent } from './components/actividades/actividades.compo
 import { DetalleMateriaComponent } from './components/detalle-materia/detalle-materia.component';
 import { LoginComponent } from './components/login/login.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
+import { RegistroComponent } from './components/registro/registro.component';
+import { RecordatorioComponent } from './components/recordatorio/recordatorio.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { PerfilComponent } from './components/perfil/perfil.component';
     DetalleMateriaComponent,
     LoginComponent,
     PerfilComponent,
+    RegistroComponent,
+    RecordatorioComponent,
   ],
   imports: [
     BrowserModule,

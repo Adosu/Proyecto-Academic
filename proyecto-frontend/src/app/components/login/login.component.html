@@ -11,5 +11,8 @@
     <button (click)="login()">Acceder</button>
 
     <div class="error" *ngIf="error">{{ error }}</div>
+
+    <p class="registro-texto">¿No tienes una cuenta?</p>
+    <button class="registro-btn" routerLink="/registro">Registrarse</button>
   </div>
 </div>

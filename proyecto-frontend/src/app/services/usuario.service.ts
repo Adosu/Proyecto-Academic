@@ -32,6 +32,11 @@ export class UsuarioService {
     });
   }
 
+  // Registrar nuevo usuario (ruta pública sin token)
+  registrarUsuario(usuario: Partial<Usuario>): Observable<Usuario> {
+    return this.http.post<Usuario>(`${this.apiUrl}/insertar`, usuario);
+  }
+
   // Modificar usuario autenticado
   modificarUsuario(usuario: Usuario): Observable<Usuario> {
     return this.http.put<Usuario>(`${this.apiUrl}/modificar`, usuario, {

@@ -11,7 +11,7 @@
   background-color: white;
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   width: 320px;
   text-align: center;
 }
@@ -61,4 +61,26 @@ button:hover {
   margin-top: 10px;
   color: red;
   font-size: 13px;
+}
+
+/* 🔵 Botón de registro */
+.registro-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+.registro-btn:hover {
+  background-color: #388e3c;
+}
+
+.registro-texto {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #555;
 }

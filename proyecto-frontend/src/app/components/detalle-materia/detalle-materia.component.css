@@ -48,3 +48,13 @@ h2 {
 .input-clave:focus {
   border-color: #003366;
 }
+
+.snackbar-success {
+  background-color: #2e7d32; /* verde */
+  color: white;
+}
+
+.snackbar-error {
+  background-color: #c62828; /* rojo */
+  color: white;
+}

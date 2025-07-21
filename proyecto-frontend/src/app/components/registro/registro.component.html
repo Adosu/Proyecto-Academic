@@ -1,0 +1,49 @@
+<div class="registro-container">
+  <div class="registro-box" *ngIf="registroForm">
+    <img src="img/academic-logo.png" alt="Logo" class="logo" />
+    <h2 class="titulo">Ucademic</h2>
+    <h4 class="subtitulo">Registro:</h4>
+
+    <form [formGroup]="registroForm" (ngSubmit)="registrar()">
+      <div class="form-group">
+        <input type="text" placeholder="Nombre" formControlName="nombre" />
+        <div class="error" *ngIf="f['nombre'].touched && f['nombre'].invalid">
+          <small *ngIf="f['nombre'].errors?.['required']">El nombre es obligatorio.</small>
+          <small *ngIf="f['nombre'].errors?.['minlength']">Debe tener al menos 4 caracteres.</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input type="text" placeholder="Apellido" formControlName="apellido" />
+        <div class="error" *ngIf="f['apellido'].touched && f['apellido'].invalid">
+          <small *ngIf="f['apellido'].errors?.['required']">El apellido es obligatorio.</small>
+          <small *ngIf="f['apellido'].errors?.['minlength']">Debe tener al menos 4 caracteres.</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input type="email" placeholder="Correo electrónico" formControlName="correo" />
+        <div class="error" *ngIf="f['correo'].touched && f['correo'].invalid">
+          <small *ngIf="f['correo'].errors?.['required']">El correo es obligatorio.</small>
+          <small *ngIf="f['correo'].errors?.['email']">Formato de correo inválido.</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input type="password" placeholder="Contraseña" formControlName="contrasena" />
+        <div class="error" *ngIf="f['contrasena'].touched && f['contrasena'].invalid">
+          <small *ngIf="f['contrasena'].errors?.['required']">La contraseña es obligatoria.</small>
+          <small *ngIf="f['contrasena'].errors?.['minlength']">Mínimo 8 caracteres.</small>
+          <small *ngIf="f['contrasena'].errors?.['invalidPassword']">
+            Debe tener una mayúscula, una minúscula, un número y un símbolo.
+          </small>
+        </div>
+      </div>
+
+      <div class="botones">
+        <button class="btn registrar-btn" type="submit" [disabled]="registroForm.invalid">Registrar</button>
+        <button class="btn cancelar-btn" type="button" (click)="cancelar()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

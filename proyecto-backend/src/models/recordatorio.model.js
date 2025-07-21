@@ -6,29 +6,31 @@ exports.findByUsuario = async (idUsuario) => {
     return result.rows;
 };
 // Insertar
-exports.insert = async ({ idUsuario, fechaLimite, titulo, descripcion, prioridad, estado, fechaRegistro, hora }) => {
+exports.insert = async ({ idUsuario, fechaLimite, titulo, descripcion, hora }) => {
+    const estado = 'Activo';
+    const fechaRegistro = new Date().toISOString().split('T')[0];
+
     const result = await db.query(`
         INSERT INTO "Recordatorio"
-        ("idUsuario", "fechaLimite", "titulo", "descripcion", "prioridad", "estado", "fechaRegistro", "hora")
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        ("idUsuario", "fechaLimite", "titulo", "descripcion", "estado", "fechaRegistro", "hora")
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING *;
-    `, [idUsuario, fechaLimite, titulo, descripcion, prioridad, estado, fechaRegistro, hora]);
+    `, [idUsuario, fechaLimite, titulo, descripcion, estado, fechaRegistro, hora]);
+
     return result.rows[0];
 };
 // Modificar
-exports.update = async ({ idRecordatorio, fechaLimite, titulo, descripcion, prioridad, estado, fechaRegistro, hora }) => {
+exports.update = async ({ idRecordatorio, fechaLimite, titulo, descripcion, hora }) => {
     const result = await db.query(`
         UPDATE "Recordatorio"
         SET "fechaLimite" = $1,
             "titulo" = $2,
             "descripcion" = $3,
-            "prioridad" = $4,
-            "estado" = $5,
-            "fechaRegistro" = $6,
-            "hora" = $7
-        WHERE "idRecordatorio" = $8
+            "hora" = $4
+        WHERE "idRecordatorio" = $5
         RETURNING *;
-    `, [fechaLimite, titulo, descripcion, prioridad, estado, fechaRegistro, hora, idRecordatorio]);
+    `, [fechaLimite, titulo, descripcion, hora, idRecordatorio]);
+
     return result.rows[0];
 };
 // Eliminar
