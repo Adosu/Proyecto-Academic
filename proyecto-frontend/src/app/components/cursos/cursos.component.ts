@@ -3,6 +3,7 @@ import { Materia, MateriaService } from '../../services/materia.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { UsuarioMateriaService } from '../../services/usuario-materia.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cursos',
@@ -21,7 +22,8 @@ export class CursosComponent implements OnInit {
     private materiaService: MateriaService,
     private usuarioService: UsuarioService,
     private usuarioMateriaService: UsuarioMateriaService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -69,6 +71,11 @@ export class CursosComponent implements OnInit {
     });
     this.menuAbierto = null;
   }
+
+  irACuadernoVirtual(idMateria: number): void {
+    this.router.navigate(['/cuaderno-virtual', idMateria]);
+  }
+
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {

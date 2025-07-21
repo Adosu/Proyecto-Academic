@@ -1,0 +1,27 @@
+<div class="bloque-tema">
+  <h4 class="titulo-tema">{{ tema.nombre }}</h4>
+
+  <div class="formulario-contenido">
+    <textarea [(ngModel)]="nuevoTexto" placeholder="Nuevo contenido..."></textarea>
+    <button (click)="insertarContenido()" [disabled]="!nuevoTexto.trim()">Añadir contenido</button>
+  </div>
+
+  <ul class="lista-contenidos" *ngIf="contenidos.length > 0; else sinContenido">
+    <li *ngFor="let c of contenidos">
+      <div *ngIf="editandoId !== c.idContenido; else editando">
+        <span (click)="habilitarEdicion(c)">{{ c.texto }}</span>
+        <button class="btn-eliminar" (click)="eliminarContenido(c.idContenido)">🗑️</button>
+      </div>
+
+      <ng-template #editando>
+        <textarea [(ngModel)]="textoTemporal" (blur)="guardarEdicion(c)"></textarea>
+        <button (click)="guardarEdicion(c)">Guardar</button>
+        <button (click)="cancelarEdicion()">Cancelar</button>
+      </ng-template>
+    </li>
+  </ul>
+
+  <ng-template #sinContenido>
+    <p class="sub-texto">Este tema aún no tiene contenido.</p>
+  </ng-template>
+</div>

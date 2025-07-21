@@ -1,0 +1,69 @@
+.bloque-tema {
+  margin-top: 20px;
+}
+
+.titulo-tema {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.formulario-contenido textarea {
+  width: 100%;
+  padding: 6px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  min-height: 60px;
+  margin-bottom: 10px;
+}
+
+.formulario-contenido button {
+  padding: 6px 12px;
+  background-color: #003366;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.lista-contenidos {
+  list-style-type: none;
+  padding: 0;
+}
+
+.lista-contenidos li {
+  background: #eaf1fb;
+  padding: 10px;
+  margin-bottom: 6px;
+  border-radius: 4px;
+  position: relative;
+}
+
+.lista-contenidos li span {
+  cursor: pointer;
+}
+
+.btn-eliminar {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: none;
+  border: none;
+  color: #c62828;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-eliminar:hover {
+  color: #8e0000;
+}
+
+textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 60px;
+  padding: 6px;
+  font-size: 14px;
+}

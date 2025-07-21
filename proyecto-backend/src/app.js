@@ -9,6 +9,8 @@ const usuarioMateria = require('./routes/usuarioMateria.routes');
 const recordatorioRoutes = require('./routes/recordatorio.routes');
 const materiaRoutes = require('./routes/materia.routes');
 const apunteRoutes = require('./routes/apunte.routes');
+const temaRoutes = require('./routes/tema.routes');
+const contenidoRoutes = require('./routes/contenido.routes');
 
 const app = express();
 app.use(cors());
@@ -20,5 +22,7 @@ app.use('/api/usuarioMaterias', usuarioMateria);
 app.use('/api/recordatorios', recordatorioRoutes);
 app.use('/api/materias', materiaRoutes);
 app.use('/api/apuntes', apunteRoutes);
+app.use('/api/temas', temaRoutes);
+app.use('/api/contenidos', contenidoRoutes);
 
 module.exports = app;

@@ -5,7 +5,7 @@
 -- Dumped from database version 17.4
 -- Dumped by pg_dump version 17.4
 
--- Started on 2025-07-20 21:41:25
+-- Started on 2025-07-21 02:38:55
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -462,8 +462,9 @@ ALTER TABLE ONLY public."UsuarioMateria" ALTER COLUMN "idUsuMat" SET DEFAULT nex
 --
 
 COPY public."Apunte" ("idApunte", "idUsuMat", fecha, titulo, resumen) FROM stdin;
-3	3	2025-06-04	MER	Resumen del diagrama entidad-relación
 4	4	2025-06-04	SCRUM	Resumen de metodología ágil SCRUM
+23	12	2025-07-20	A	
+3	3	2025-06-04	MER	Resumen del diagrama entidad-relación
 \.
 
 
@@ -475,6 +476,8 @@ COPY public."Apunte" ("idApunte", "idUsuMat", fecha, titulo, resumen) FROM stdin
 
 COPY public."Contenido" ("idContenido", "idTema", "idTipo", texto) FROM stdin;
 4	5	1	Una entidad representa un objeto del mundo real. Una relación une dos entidades.
+1	5	1	prueba ejemplo
+2	5	1	prueba ejemplo 2
 \.
 
 
@@ -534,7 +537,8 @@ COPY public."Recordatorio" ("idRecordatorio", "idUsuario", "fechaLimite", titulo
 --
 
 COPY public."Tema" ("idTema", "idApunte", "idTemaPadre", nombre) FROM stdin;
-5	3	\N	Entidades y relaciones
+5	3	\N	Entidades y Relaciones
+1	3	\N	Base de datos
 \.
 
 
@@ -590,7 +594,7 @@ COPY public."UsuarioMateria" ("idUsuMat", "idUsuario", "idMateria", estado, "fec
 -- Name: Apunte_idApunte_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Apunte_idApunte_seq"', 1, false);
+SELECT pg_catalog.setval('public."Apunte_idApunte_seq"', 23, true);
 
 
 --
@@ -599,7 +603,7 @@ SELECT pg_catalog.setval('public."Apunte_idApunte_seq"', 1, false);
 -- Name: Contenido_idContenido_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Contenido_idContenido_seq"', 1, false);
+SELECT pg_catalog.setval('public."Contenido_idContenido_seq"', 3, true);
 
 
 --
@@ -626,7 +630,7 @@ SELECT pg_catalog.setval('public."Recordatorio_idRecordatorio_seq"', 42, true);
 -- Name: Tema_idTema_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Tema_idTema_seq"', 1, false);
+SELECT pg_catalog.setval('public."Tema_idTema_seq"', 1, true);
 
 
 --
@@ -809,7 +813,7 @@ ALTER TABLE ONLY public."UsuarioMateria"
     ADD CONSTRAINT "idUsuario" FOREIGN KEY ("idUsuario") REFERENCES public."Usuario"("idUsuario") ON DELETE CASCADE;
 
 
--- Completed on 2025-07-20 21:41:25
+-- Completed on 2025-07-21 02:38:56
 
 --
 -- PostgreSQL database dump complete

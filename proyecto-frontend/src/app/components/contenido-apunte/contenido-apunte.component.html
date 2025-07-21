@@ -1,0 +1,36 @@
+<div class="contenido-apunte-container">
+
+  <!-- Agregar nuevo tema -->
+  <div class="formulario-tema">
+    <input
+      type="text"
+      placeholder="Nuevo tema"
+      [(ngModel)]="nuevoTema"
+      (keydown.enter)="agregarTema()"
+    />
+    <button (click)="agregarTema()" [disabled]="!nuevoTema.trim()">+ Añadir</button>
+  </div>
+
+  <!-- Lista de temas -->
+  <div *ngFor="let tema of temas" class="bloque-tema">
+    <!-- Edición in-place -->
+    <div *ngIf="editandoId === tema.idTema; else verTitulo">
+      <input
+        [(ngModel)]="nombreTemporal"
+        (keydown.enter)="guardarEdicion(tema)"
+        (keydown.escape)="cancelarEdicion()"
+        (blur)="guardarEdicion(tema)"
+      />
+    </div>
+
+    <ng-template #verTitulo>
+      <h4 class="titulo-tema" (click)="habilitarEdicion(tema)">
+        {{ tema.nombre }}
+        <button (click)="eliminarTema(tema)">🗑️</button>
+      </h4>
+    </ng-template>
+
+    <!-- Contenido de cada tema -->
+    <app-contenido-tema [tema]="tema"></app-contenido-tema>
+  </div>
+</div>

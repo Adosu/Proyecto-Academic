@@ -21,6 +21,9 @@ import { LoginComponent } from './components/login/login.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { RegistroComponent } from './components/registro/registro.component';
 import { RecordatorioComponent } from './components/recordatorio/recordatorio.component';
+import { CuadernoVirtualComponent } from './components/cuaderno-virtual/cuaderno-virtual.component';
+import { ContenidoApunteComponent } from './components/contenido-apunte/contenido-apunte.component';
+import { ContenidoTemaComponent } from './components/contenido-tema/contenido-tema.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,9 @@ import { RecordatorioComponent } from './components/recordatorio/recordatorio.co
     PerfilComponent,
     RegistroComponent,
     RecordatorioComponent,
+    CuadernoVirtualComponent,
+    ContenidoApunteComponent,
+    ContenidoTemaComponent,
   ],
   imports: [
     BrowserModule,

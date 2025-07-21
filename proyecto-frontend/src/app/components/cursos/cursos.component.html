@@ -4,8 +4,7 @@
 
   <div class="cursos-grid">
     <div *ngFor="let materia of materias" class="curso-card">
-      <div class="curso-imagen"
-           [ngStyle]="{
+      <div class="curso-imagen" [ngStyle]="{
              'background-image': 'url(' + getImagenFondo(materia) + ')'
            }">
       </div>
@@ -15,7 +14,9 @@
           {{ materia.nombreMateria }} - {{ materia.cursoParalelo }} - {{ materia.nombreDocente }}
         </div>
 
-        <button class="btn-cuaderno">Cuaderno virtual</button>
+        <button class="btn-cuaderno" (click)="irACuadernoVirtual(materia.idMateria)">
+          Cuaderno virtual
+        </button>
 
         <!-- Menú en parte inferior derecha -->
         <div class="menu-container" #dropdownMenu>

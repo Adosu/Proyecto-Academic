@@ -1,0 +1,39 @@
+.contenido-apunte-container {
+  margin-top: 20px;
+}
+
+.formulario-tema {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.formulario-tema input {
+  flex: 1;
+  padding: 6px;
+  font-size: 14px;
+}
+
+.bloque-tema {
+  background-color: #f0f4f8;
+  padding: 10px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+}
+
+.titulo-tema {
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-size: 17px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titulo-tema button {
+  background: none;
+  border: none;
+  color: #c00;
+  font-size: 18px;
+  cursor: pointer;
+}

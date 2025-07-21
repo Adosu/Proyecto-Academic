@@ -8,6 +8,7 @@ import { DetalleMateriaComponent } from './components/detalle-materia/detalle-ma
 import { LoginComponent } from './components/login/login.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { RegistroComponent } from './components/registro/registro.component';
+import { CuadernoVirtualComponent } from './components/cuaderno-virtual/cuaderno-virtual.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'actividades', component: ActividadesComponent, canActivate: [AuthGuard] },
   { path: 'recordatorio', component: RecordatorioComponent, canActivate: [AuthGuard] },
   { path: 'cursos', component: CursosComponent, canActivate: [AuthGuard] },
+  { path: 'cuaderno-virtual/:id', component: CuadernoVirtualComponent, canActivate: [AuthGuard] },
   { path: 'detalle-materia/:id', component: DetalleMateriaComponent, canActivate: [AuthGuard] }
 ];
 
