@@ -1,69 +1,60 @@
-.bloque-tema {
-  margin-top: 20px;
+.contenido-tema-container {
+  margin-top: 10px;
+  background-color: #f4f7fa;
+  padding: 10px;
+  border-radius: 6px;
 }
 
-.titulo-tema {
-  font-weight: bold;
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.formulario-contenido textarea {
+textarea {
   width: 100%;
+  min-height: 60px;
   padding: 6px;
-  font-size: 14px;
+  margin-bottom: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical;
-  min-height: 60px;
-  margin-bottom: 10px;
 }
 
-.formulario-contenido button {
-  padding: 6px 12px;
+button {
   background-color: #003366;
   color: white;
+  padding: 6px 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  margin-bottom: 8px;
+}
+
+button[disabled] {
+  background-color: #aaa;
+  cursor: not-allowed;
 }
 
 .lista-contenidos {
   list-style-type: none;
   padding: 0;
+  margin-top: 10px;
 }
 
 .lista-contenidos li {
-  background: #eaf1fb;
-  padding: 10px;
+  background-color: #e3eaf4;
+  padding: 6px;
   margin-bottom: 6px;
   border-radius: 4px;
-  position: relative;
-}
-
-.lista-contenidos li span {
-  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .btn-eliminar {
-  position: absolute;
-  right: 10px;
-  top: 10px;
   background: none;
   border: none;
-  color: #c62828;
+  color: #c00;
   font-size: 16px;
   cursor: pointer;
 }
 
-.btn-eliminar:hover {
-  color: #8e0000;
-}
-
-textarea {
-  width: 100%;
-  resize: vertical;
-  min-height: 60px;
-  padding: 6px;
-  font-size: 14px;
+.sub-texto {
+  font-style: italic;
+  color: #666;
 }

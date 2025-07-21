@@ -14,7 +14,7 @@ export interface Tema {
 export class TemaService {
   private apiUrl = 'http://localhost:3000/api/temas';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem('token') || '';
@@ -40,9 +40,9 @@ export class TemaService {
   }
 
   eliminarTema(idTema: number): Observable<any> {
-    return this.http.request('delete', `${this.apiUrl}/eliminar`, {
-      headers: this.getHeaders(),
-      body: { idTema }
+    return this.http.delete(`${this.apiUrl}/eliminar/${idTema}`, {
+      headers: this.getHeaders()
     });
   }
+
 }

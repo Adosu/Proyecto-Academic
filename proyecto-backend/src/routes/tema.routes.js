@@ -7,6 +7,6 @@ const authenticateToken = require('../middleware/auth');
 router.get('/listar', authenticateToken, controller.getByApunte);
 router.post('/insertar', authenticateToken, controller.create);
 router.put('/modificar', authenticateToken, controller.update);
-router.delete('/eliminar', authenticateToken, controller.remove);
+router.delete('/eliminar/:id', authenticateToken, controller.remove);
 
 module.exports = router;

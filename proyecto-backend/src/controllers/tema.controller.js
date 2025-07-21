@@ -30,10 +30,13 @@ exports.update = async (req, res) => {
 
 exports.remove = async (req, res) => {
   try {
-    const { idTema } = req.body;
+    const idTema = parseInt(req.params.id);
+    console.log('🧪 Eliminando tema con ID:', idTema);
     const data = await service.eliminarTema(idTema);
     res.json(data);
   } catch (err) {
+    console.error('❌ Error al eliminar tema:', err);
     res.status(500).json({ error: err.message });
   }
 };
+

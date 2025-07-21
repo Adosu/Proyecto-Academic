@@ -1,27 +1,32 @@
-<div class="bloque-tema">
-  <h4 class="titulo-tema">{{ tema.nombre }}</h4>
+<div class="contenido-tema-container">
+  <!-- Campo para nuevo contenido -->
+  <textarea [(ngModel)]="nuevoContenido" placeholder="Nuevo contenido..."></textarea>
+  <button (click)="agregarContenido()" [disabled]="!nuevoContenido.trim()">Añadir contenido</button>
 
-  <div class="formulario-contenido">
-    <textarea [(ngModel)]="nuevoTexto" placeholder="Nuevo contenido..."></textarea>
-    <button (click)="insertarContenido()" [disabled]="!nuevoTexto.trim()">Añadir contenido</button>
-  </div>
-
-  <ul class="lista-contenidos" *ngIf="contenidos.length > 0; else sinContenido">
+  <!-- Lista de contenidos -->
+  <ul *ngIf="contenidos.length > 0; else sinContenidos" class="lista-contenidos">
     <li *ngFor="let c of contenidos">
-      <div *ngIf="editandoId !== c.idContenido; else editando">
-        <span (click)="habilitarEdicion(c)">{{ c.texto }}</span>
-        <button class="btn-eliminar" (click)="eliminarContenido(c.idContenido)">🗑️</button>
+      <!-- Modo edición -->
+      <div *ngIf="editandoId === c.idContenido; else verContenido" style="width: 100%;">
+        <textarea
+          [(ngModel)]="textoTemporal"
+          (keydown.enter)="guardarEdicion(c)"
+          (keydown.escape)="cancelarEdicion()"
+          (blur)="guardarEdicion(c)"
+        ></textarea>
       </div>
 
-      <ng-template #editando>
-        <textarea [(ngModel)]="textoTemporal" (blur)="guardarEdicion(c)"></textarea>
-        <button (click)="guardarEdicion(c)">Guardar</button>
-        <button (click)="cancelarEdicion()">Cancelar</button>
+      <!-- Modo visualización -->
+      <ng-template #verContenido>
+        <span (click)="habilitarEdicion(c)" style="flex: 1; cursor: pointer;">
+          {{ c.texto }}
+        </span>
+        <button class="btn-eliminar" (click)="eliminarContenido(c.idContenido)">🗑️</button>
       </ng-template>
     </li>
   </ul>
 
-  <ng-template #sinContenido>
+  <ng-template #sinContenidos>
     <p class="sub-texto">Este tema aún no tiene contenido.</p>
   </ng-template>
 </div>
