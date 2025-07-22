@@ -51,7 +51,6 @@ export class NabvarComponent implements OnInit {
 
   irAPerfil() {
     this.router.navigate(['/perfil']);
-    console.log('Perfil clickeado');
   }
 
   irARecordatorios() {

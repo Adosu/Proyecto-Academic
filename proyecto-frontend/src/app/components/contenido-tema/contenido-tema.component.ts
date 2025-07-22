@@ -38,10 +38,10 @@ export class ContenidoTemaComponent implements OnInit, AfterViewChecked {
   ngAfterViewChecked(): void {
     if (this.editandoId !== null && !this.inputFocused) {
       setTimeout(() => {
-        const textareaEl = this.inputsEditar.find(
+        const textareaEl = this.inputsEditar?.find(
           el => (el.nativeElement as HTMLTextAreaElement).value === this.textoTemporal
         );
-        if (textareaEl) {
+        if (textareaEl?.nativeElement) {
           const el = textareaEl.nativeElement as HTMLTextAreaElement;
           el.focus();
           el.setSelectionRange(el.value.length, el.value.length);
@@ -50,9 +50,9 @@ export class ContenidoTemaComponent implements OnInit, AfterViewChecked {
       }, 0);
     }
 
-    if (this.mostrarNuevo && this.nuevoContenidoInput) {
+    if (this.mostrarNuevo && this.nuevoContenidoInput?.nativeElement) {
       setTimeout(() => {
-        this.nuevoContenidoInput.nativeElement.focus();
+        this.nuevoContenidoInput?.nativeElement?.focus();
       }, 0);
     }
   }
@@ -80,7 +80,6 @@ export class ContenidoTemaComponent implements OnInit, AfterViewChecked {
 
     const nuevo: Partial<Contenido> = {
       idTema: this.tema.idTema,
-      idTipo: 1,
       texto
     };
 

@@ -28,7 +28,7 @@ export class ContenidoApunteComponent implements OnInit, OnChanges, AfterViewChe
   @ViewChildren('inputEditarRef') inputsEditar!: QueryList<ElementRef>;
   @ViewChild('inputNuevoSubtema') inputNuevoSubtema!: ElementRef;
 
-  constructor(private temaService: TemaService) {}
+  constructor(private temaService: TemaService) { }
 
   ngOnInit(): void {
     this.cargarTemas();
@@ -47,21 +47,27 @@ export class ContenidoApunteComponent implements OnInit, OnChanges, AfterViewChe
   ngAfterViewChecked(): void {
     if (this.editandoId !== null && !this.inputFocused) {
       setTimeout(() => {
-        const inputEl = this.inputsEditar.find(
-          el => (el.nativeElement as HTMLInputElement).value === this.nombreTemporal
-        );
-        if (inputEl) {
-          const input = inputEl.nativeElement as HTMLInputElement;
-          input.focus();
-          input.setSelectionRange(input.value.length, input.value.length);
-          this.inputFocused = true;
+        if (this.inputsEditar && this.inputsEditar.length > 0) {
+          const inputEl = this.inputsEditar.find(el => {
+            const nativeEl = el?.nativeElement as HTMLInputElement;
+            return nativeEl?.value === this.nombreTemporal;
+          });
+
+          if (inputEl?.nativeElement) {
+            const input = inputEl.nativeElement as HTMLInputElement;
+            input.focus();
+            input.setSelectionRange(input.value.length, input.value.length);
+            this.inputFocused = true;
+          }
         }
       }, 0);
     }
 
-    if (this.inputNuevoSubtema && this.nuevoSubtemaPadreId !== null) {
+    if (this.nuevoSubtemaPadreId !== null) {
       setTimeout(() => {
-        this.inputNuevoSubtema.nativeElement.focus();
+        if (this.inputNuevoSubtema?.nativeElement) {
+          this.inputNuevoSubtema.nativeElement.focus();
+        }
       }, 0);
     }
   }

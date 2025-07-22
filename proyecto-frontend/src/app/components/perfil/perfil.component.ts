@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { Usuario, UsuarioService } from '../../services/usuario.service';
+import { UsuarioService } from '../../services/usuario.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-
 
 @Component({
   selector: 'app-perfil',
@@ -15,6 +13,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class PerfilComponent implements OnInit {
   perfilForm!: FormGroup;
   mostrarContrasena: boolean = false;
+
+  modalVisible = false;
+  modalTitulo = '';
+  modalMensaje = '';
 
   constructor(
     private fb: FormBuilder,
@@ -88,29 +90,39 @@ export class PerfilComponent implements OnInit {
   }
 
   eliminarUsuario(): void {
-    if (confirm('¿Estás seguro que deseas eliminar tu cuenta? Esta acción es irreversible.')) {
-      this.usuarioService.eliminarUsuario().subscribe({
-        next: () => {
-          localStorage.removeItem('token');
-          this.snackBar.open('Usuario eliminado correctamente', 'Cerrar', {
-            duration: 3000,
-            horizontalPosition: 'center',
-            verticalPosition: 'bottom',
-            panelClass: ['snackbar-success']
-          });
-          this.router.navigate(['/login']);
-        },
-        error: (err) => {
-          console.error('Error al eliminar usuario:', err);
-          this.snackBar.open('Error al eliminar usuario', 'Cerrar', {
-            duration: 3000,
-            horizontalPosition: 'center',
-            verticalPosition: 'bottom',
-            panelClass: ['snackbar-error']
-          });
-        }
-      });
-    }
+    this.modalTitulo = 'Eliminar cuenta';
+    this.modalMensaje = '¿Estás seguro que deseas eliminar tu cuenta? Esta acción es irreversible y eliminará todos tus apuntes y datos personales.';
+    this.modalVisible = true;
+  }
+
+  confirmarEliminacion(): void {
+    this.usuarioService.eliminarUsuario().subscribe({
+      next: () => {
+        localStorage.removeItem('token');
+        this.snackBar.open('Usuario eliminado correctamente', 'Cerrar', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          panelClass: ['snackbar-success']
+        });
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error('Error al eliminar usuario:', err);
+        this.snackBar.open('Error al eliminar usuario', 'Cerrar', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          panelClass: ['snackbar-error']
+        });
+      }
+    });
+
+    this.modalVisible = false;
+  }
+
+  cancelarEliminacion(): void {
+    this.modalVisible = false;
   }
 
   getIniciales(): string {

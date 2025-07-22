@@ -16,6 +16,12 @@ export class CursosComponent implements OnInit {
   nombreUsuario: string = '';
   menuAbierto: number | null = null;
 
+  modalVisible = false;
+  modalTitulo = '';
+  modalMensaje = '';
+  materiaPendiente?: Materia;
+
+
   @ViewChildren('dropdownMenu') dropdownMenus!: QueryList<ElementRef>;
 
   constructor(
@@ -55,20 +61,11 @@ export class CursosComponent implements OnInit {
   }
 
   desinscribirse(materia: Materia) {
-    this.usuarioMateriaService.desinscribirse(materia.idMateria).subscribe({
-      next: () => {
-        this.snackBar.open(`Te has desinscrito de ${materia.nombreMateria}`, 'Cerrar', {
-          duration: 3000
-        });
-        this.cargarMaterias(); // recargar la lista
-      },
-      error: (err) => {
-        console.error('Error al desinscribirse:', err);
-        this.snackBar.open('Ocurrió un error al desinscribirse', 'Cerrar', {
-          duration: 3000
-        });
-      }
-    });
+    this.materiaPendiente = materia;
+    this.modalTitulo = 'Confirmar desinscripción';
+    this.modalMensaje = `¿Estás seguro que deseas desinscribirte de "${materia.nombreMateria}"? 
+  Todos los apuntes relacionados se perderán.`;
+    this.modalVisible = true;
     this.menuAbierto = null;
   }
 
@@ -90,6 +87,33 @@ export class CursosComponent implements OnInit {
     if (!clickedInsideAnyMenu) {
       this.menuAbierto = null;
     }
+  }
+
+  confirmarDesinscripcion(): void {
+    if (!this.materiaPendiente) return;
+
+    this.usuarioMateriaService.desinscribirse(this.materiaPendiente.idMateria).subscribe({
+      next: () => {
+        this.snackBar.open(`Te has desinscrito`, 'Cerrar', {
+          duration: 3000
+        });
+        this.cargarMaterias();
+      },
+      error: (err) => {
+        console.error('Error al desinscribirse:', err);
+        this.snackBar.open('Ocurrió un error al desinscribirse', 'Cerrar', {
+          duration: 3000
+        });
+      }
+    });
+
+    this.modalVisible = false;
+    this.materiaPendiente = undefined;
+  }
+
+  cancelarDesinscripcion(): void {
+    this.modalVisible = false;
+    this.materiaPendiente = undefined;
   }
 
 }

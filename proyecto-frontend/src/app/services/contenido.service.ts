@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 export interface Contenido {
   idContenido: number;
   idTema: number;
-  idTipo: number;
   texto: string;
 }
 
@@ -32,7 +31,7 @@ export class ContenidoService {
     });
   }
 
-  modificarContenido(data: Contenido): Observable<Contenido> {
+  modificarContenido(data: { idContenido: number, texto: string }): Observable<Contenido> {
     return this.http.put<Contenido>(`${this.apiUrl}/modificar`, data, {
       headers: this.getHeaders()
     });

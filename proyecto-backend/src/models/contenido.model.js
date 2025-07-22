@@ -11,23 +11,23 @@ exports.findByTema = async (idTema) => {
 };
 
 // Insertar nuevo contenido
-exports.insert = async ({ idTema, idTipo, texto }) => {
+exports.insert = async ({ idTema, texto }) => {
   const result = await db.query(`
-    INSERT INTO "Contenido" ("idTema", "idTipo", "texto")
-    VALUES ($1, $2, $3)
+    INSERT INTO "Contenido" ("idTema", "texto")
+    VALUES ($1, $2)
     RETURNING *;
-  `, [idTema, idTipo, texto]);
+  `, [idTema, texto]);
   return result.rows[0];
 };
 
 // Modificar contenido existente
-exports.update = async ({ idContenido, idTipo, texto }) => {
+exports.update = async ({ idContenido, texto }) => {
   const result = await db.query(`
     UPDATE "Contenido"
-    SET "idTipo" = $1, "texto" = $2
-    WHERE "idContenido" = $3
+    SET "texto" = $1
+    WHERE "idContenido" = $2
     RETURNING *;
-  `, [idTipo, texto, idContenido]);
+  `, [texto, idContenido]);
   return result.rows[0];
 };
 

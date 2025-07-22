@@ -71,3 +71,11 @@
     </div>
   </form>
 </div>
+
+<app-modal-confirmacion
+  [visible]="modalVisible"
+  [titulo]="modalTitulo"
+  [mensaje]="modalMensaje"
+  (aceptar)="confirmarEliminacion()"
+  (cancelar)="cancelarEliminacion()"
+></app-modal-confirmacion>
