@@ -1,5 +1,4 @@
 <div class="cuaderno-container">
-  <!-- LADO IZQUIERDO: LISTA DE APUNTES -->
   <div class="sidebar">
     <h3>Mis Apuntes</h3>
     <button class="nuevo-btn" (click)="toggleFormulario()">
@@ -20,15 +19,19 @@
           <h4 [title]="apunte.titulo">{{ apunte.titulo }}</h4>
           <p *ngIf="apunte.resumen" [title]="apunte.resumen">{{ apunte.resumen }}</p>
         </div>
-        <div class="apunte-botones">
-          <button class="btn-editar" (click)="editarApunte(apunte)">✏️</button>
-          <button class="btn-eliminar" (click)="confirmarEliminar(apunte)">🗑️</button>
+
+        <div class="menu-apunte">
+          <button class="btn-menu" (click)="toggleMenu(apunte.idApunte)">⋯</button>
+
+          <div class="menu-opciones" *ngIf="menuVisibleId === apunte.idApunte">
+            <button (click)="editarApunte(apunte)">✏️ Editar apunte</button>
+            <button (click)="confirmarEliminar(apunte)">🗑️ Eliminar apunte</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- LADO DERECHO: ÁREA DE TRABAJO -->
   <div class="contenido">
     <ng-container *ngIf="apunteSeleccionado; else mensaje">
       <app-contenido-apunte [apunte]="apunteSeleccionado"></app-contenido-apunte>
@@ -40,11 +43,10 @@
   </div>
 </div>
 
-<!-- MODAL DE CONFIRMACIÓN PERSONALIZADO -->
 <app-modal-confirmacion
   [visible]="modalVisible"
   [titulo]="modalTitulo"
   [mensaje]="modalMensaje"
   (aceptar)="eliminarConfirmado()"
-  (cancelar)="cancelarEliminacion()"
-></app-modal-confirmacion>
+  (cancelar)="cancelarEliminacion()">
+</app-modal-confirmacion>

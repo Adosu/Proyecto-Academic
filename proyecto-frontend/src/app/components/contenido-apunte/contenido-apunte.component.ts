@@ -13,6 +13,7 @@ export class ContenidoApunteComponent implements OnInit, OnChanges, AfterViewChe
   modalTitulo = '';
   modalMensaje = '';
   temaPendiente?: Tema;
+  modoLectura: boolean = true;
 
   @Input() apunte!: Apunte;
 
@@ -37,6 +38,10 @@ export class ContenidoApunteComponent implements OnInit, OnChanges, AfterViewChe
     if (changes['apunte'] && !changes['apunte'].firstChange) {
       this.cargarTemas();
     }
+  }
+
+  alternarModo(): void {
+    this.modoLectura = !this.modoLectura;
   }
 
   ngAfterViewChecked(): void {

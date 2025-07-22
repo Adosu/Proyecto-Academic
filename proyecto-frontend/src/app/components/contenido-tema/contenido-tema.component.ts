@@ -10,6 +10,7 @@ import { Tema } from '../../services/tema.service';
 })
 export class ContenidoTemaComponent implements OnInit, AfterViewChecked {
   @Input() tema!: Tema;
+  @Input() modoLectura: boolean = true;
   contenidos: Contenido[] = [];
   nuevoContenido: string = '';
   mostrarNuevo = false;
@@ -26,7 +27,7 @@ export class ContenidoTemaComponent implements OnInit, AfterViewChecked {
   @ViewChildren('inputEditarContenido') inputsEditar!: QueryList<ElementRef>;
   @ViewChild('nuevoContenidoInput') nuevoContenidoInput!: ElementRef;
 
-  constructor(private contenidoService: ContenidoService) {}
+  constructor(private contenidoService: ContenidoService) { }
 
   ngOnInit(): void {
     if (this.tema?.idTema) {
@@ -64,8 +65,10 @@ export class ContenidoTemaComponent implements OnInit, AfterViewChecked {
   }
 
   mostrarInputNuevo(): void {
-    this.mostrarNuevo = true;
-    this.nuevoContenido = '';
+    if (!this.modoLectura) {
+      this.mostrarNuevo = true;
+      this.nuevoContenido = '';
+    }
   }
 
   agregarContenido(): void {
@@ -125,9 +128,11 @@ export class ContenidoTemaComponent implements OnInit, AfterViewChecked {
   }
 
   habilitarEdicion(c: Contenido): void {
-    this.editandoId = c.idContenido;
-    this.textoTemporal = c.texto;
-    this.inputFocused = false;
+    if (!this.modoLectura) {
+      this.editandoId = c.idContenido;
+      this.textoTemporal = c.texto;
+      this.inputFocused = false;
+    }
   }
 
   guardarEdicion(c: Contenido): void {
@@ -174,5 +179,10 @@ export class ContenidoTemaComponent implements OnInit, AfterViewChecked {
     } else if (event.key === 'Escape') {
       this.cancelarEdicion();
     }
+  }
+
+  ajustarAlturaTextarea(textarea: HTMLTextAreaElement): void {
+    textarea.style.height = 'auto'; // reset altura
+    textarea.style.height = textarea.scrollHeight + 'px'; // altura real del contenido
   }
 }

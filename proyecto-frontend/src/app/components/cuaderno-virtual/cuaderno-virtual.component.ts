@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Apunte, ApunteService } from '../../services/apunte.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -24,6 +24,7 @@ export class CuadernoVirtualComponent implements OnInit {
 
   modoEdicion: boolean = false;
   apunteEditando?: Apunte;
+  menuVisibleId?: number;
 
   constructor(
     private apunteService: ApunteService,
@@ -49,10 +50,16 @@ export class CuadernoVirtualComponent implements OnInit {
 
   toggleFormulario(): void {
     this.mostrarFormulario = !this.mostrarFormulario;
-    if (!this.mostrarFormulario) {
-      this.resetFormulario();
-    }
+    if (!this.mostrarFormulario) this.resetFormulario();
   }
+
+  resetFormulario(): void {
+    this.nuevoTitulo = '';
+    this.nuevoResumen = '';
+    this.apunteEditando = undefined;
+    this.modoEdicion = false;
+  }
+
 
   crearApunte(): void {
     if (!this.nuevoTitulo.trim()) return;
@@ -78,6 +85,7 @@ export class CuadernoVirtualComponent implements OnInit {
     this.nuevoTitulo = apunte.titulo;
     this.nuevoResumen = apunte.resumen || '';
     this.mostrarFormulario = true;
+    this.menuVisibleId = undefined;
   }
 
   guardarCambios(): void {
@@ -103,18 +111,12 @@ export class CuadernoVirtualComponent implements OnInit {
     });
   }
 
-  resetFormulario(): void {
-    this.nuevoTitulo = '';
-    this.nuevoResumen = '';
-    this.apunteEditando = undefined;
-    this.modoEdicion = false;
-  }
-
   confirmarEliminar(apunte: Apunte): void {
     this.apuntePendiente = apunte;
     this.modalTitulo = 'Confirmar eliminación';
     this.modalMensaje = '¿Estás seguro que deseas eliminar este apunte? Se eliminará todo el contenido que contiene.';
     this.modalVisible = true;
+    this.menuVisibleId = undefined;
   }
 
   eliminarConfirmado(): void {
@@ -140,5 +142,16 @@ export class CuadernoVirtualComponent implements OnInit {
 
   seleccionarApunte(apunte: Apunte): void {
     this.apunteSeleccionado = apunte;
+    this.menuVisibleId = undefined;
+  }
+
+  toggleMenu(id: number): void {
+    this.menuVisibleId = this.menuVisibleId === id ? undefined : id;
+  }
+
+  @HostListener('document:click', ['$event'])
+  cerrarMenusFuera(event: Event) {
+    const clickedInside = (event.target as HTMLElement).closest('.menu-apunte');
+    if (!clickedInside) this.menuVisibleId = undefined;
   }
 }

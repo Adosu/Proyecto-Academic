@@ -1,6 +1,17 @@
 <div class="contenido-apunte-container">
-  <!-- Agregar nuevo tema padre -->
-  <div class="formulario-tema">
+
+  <!-- BOTÓN DE MODO -->
+  <div class="modo-toggle-container">
+    <button
+      class="modo-toggle-btn"
+      [ngClass]="modoLectura ? 'modo-lectura' : 'modo-edicion'"
+      (click)="alternarModo()">
+      {{ modoLectura ? 'Modo Lectura' : 'Modo Edición' }}
+    </button>
+  </div>
+
+  <!-- Campo NUEVO TEMA PADRE -->
+  <div class="formulario-tema" *ngIf="!modoLectura">
     <input
       type="text"
       class="input-tema"
@@ -32,18 +43,18 @@
 
       <ng-template #verTitulo>
         <div class="titulo-tema">
-          <span (click)="habilitarEdicion(tema)">{{ tema.nombre }}</span>
-          <span>
+          <span (click)="!modoLectura && habilitarEdicion(tema)">{{ tema.nombre }}</span>
+          <span *ngIf="!modoLectura">
             <button class="btn-subtema" (click)="agregarSubtema(tema); $event.stopPropagation()">➕</button>
             <button class="btn-eliminar" (click)="eliminarTema(tema); $event.stopPropagation()">🗑️</button>
           </span>
         </div>
       </ng-template>
 
-      <app-contenido-tema [tema]="tema"></app-contenido-tema>
+      <app-contenido-tema [tema]="tema" [modoLectura]="modoLectura"></app-contenido-tema>
 
       <!-- Nuevo subtema -->
-      <div *ngIf="nuevoSubtemaPadreId === tema.idTema" class="subtema">
+      <div *ngIf="!modoLectura && nuevoSubtemaPadreId === tema.idTema" class="subtema">
         <input
           #inputNuevoSubtema
           class="input-tema"
