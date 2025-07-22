@@ -5,7 +5,7 @@
 -- Dumped from database version 17.4
 -- Dumped by pg_dump version 17.4
 
--- Started on 2025-07-21 02:38:55
+-- Started on 2025-07-21 19:16:36
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -465,6 +465,10 @@ COPY public."Apunte" ("idApunte", "idUsuMat", fecha, titulo, resumen) FROM stdin
 4	4	2025-06-04	SCRUM	Resumen de metodología ágil SCRUM
 23	12	2025-07-20	A	
 3	3	2025-06-04	MER	Resumen del diagrama entidad-relación
+25	3	2025-07-21	A1	
+30	26	2025-07-21	Autorización	La autorización, en esencia, es el proceso de otorgar permiso o acceso a un usuario o entidad para realizar ciertas acciones o acceder a recursos específicos. En términos más simples, es la confirmación de que alguien tiene el derecho de hacer algo o entrar a un lugar. \nAquí hay un resumen más detallado:\nDefinición:\nLa autorización implica conceder o negar acceso a un sistema, recurso o red a un usuario o entidad, basado en su identidad, roles o permisos. \nImportancia:\nPermite controlar quién puede acceder a qué, garantizando la seguridad y el cumplimiento de políticas. \nTipos de Autorización:\nPuede variar desde permisos para ver información hasta la capacidad de modificarla.
+31	25	2025-07-21	Disparadores	
+32	25	2025-07-21	Base de datos relacionales	
 \.
 
 
@@ -476,8 +480,13 @@ COPY public."Apunte" ("idApunte", "idUsuMat", fecha, titulo, resumen) FROM stdin
 
 COPY public."Contenido" ("idContenido", "idTema", "idTipo", texto) FROM stdin;
 4	5	1	Una entidad representa un objeto del mundo real. Una relación une dos entidades.
+20	36	1	Contenido 2
 1	5	1	prueba ejemplo
-2	5	1	prueba ejemplo 2
+41	43	1	Haaaa
+7	1	1	Las bases de datos relaciones son ...
+8	17	1	Entidad relacion significa...\npara lo siguiente.
+16	24	1	La autorización implica conceder o negar acceso a un sistema, recurso o red a un usuario o entidad, basado en su identidad, roles o permisos.
+35	37	1	Contenido 3
 \.
 
 
@@ -527,6 +536,11 @@ COPY public."Recordatorio" ("idRecordatorio", "idUsuario", "fechaLimite", titulo
 31	4	2025-06-14	Trabajo grupal Ética Profesional	Coordinar tareas con el grupo.	Activo	2025-06-03	15:30
 32	1	2025-06-01	Cuestionario de análisis de datos	Resolver en línea antes del plazo.	Activo	2025-05-30	16:00
 34	1	2025-07-18	Prueba ID	Probando ID	Activo	2025-07-16	10:30
+43	1	2025-07-21	Examen	xd	Activo	2025-07-21	12:40
+46	10	2025-07-22	Prueba		Activo	2025-07-21	12:30
+45	10	2025-07-21	Examen	Descripcion de prueba	Activo	2025-07-21	09:30
+47	10	2025-07-12	Proyecto BD		Activo	2025-07-21	10:40
+48	1	2025-07-30	Examen		Activo	2025-07-21	18:10
 \.
 
 
@@ -538,7 +552,18 @@ COPY public."Recordatorio" ("idRecordatorio", "idUsuario", "fechaLimite", titulo
 
 COPY public."Tema" ("idTema", "idApunte", "idTemaPadre", nombre) FROM stdin;
 5	3	\N	Entidades y Relaciones
-1	3	\N	Base de datos
+37	31	25	Subtema 2
+38	31	25	Subtema 3
+40	31	25	Subtema 4
+35	31	\N	Tema 2
+39	31	35	Subtema 1
+25	31	\N	Tema 1
+43	31	36	Sub-Subtema 1
+44	31	43	Sub-Sub-Subtema1
+36	31	25	Subtema 1
+1	3	\N	Bases de datos
+17	3	1	Entidad Relacion
+24	30	\N	Definición:
 \.
 
 
@@ -567,6 +592,7 @@ COPY public."Usuario" ("idUsuario", nombre, apellido, correo, contrasena, estado
 1	Alex Ariel	Niola Toro	niolatoro@hotmail.com	Ados0750669202@	Activo	2025-06-01
 5	Juan	Perez	juan@example.com	Segura123*	Activo	2025-07-20
 9	Charlie	Cordova	charlie@gmail.com	Charlie123@	Activo	2025-07-21
+10	Fernando	Carchipulla	jimmycarchipulla25@gmail.com	Fernando23.	Activo	2025-07-21
 \.
 
 
@@ -582,9 +608,10 @@ COPY public."UsuarioMateria" ("idUsuMat", "idUsuario", "idMateria", estado, "fec
 6	1	2	Activo	2025-07-19
 7	1	3	Activo	2025-07-19
 12	3	5	Activo	2025-07-20
-14	1	4	Activo	2025-07-20
 15	1	5	Activo	2025-07-20
-16	1	1	Activo	2025-07-20
+24	1	4	Activo	2025-07-21
+25	1	1	Activo	2025-07-21
+26	10	1	Activo	2025-07-21
 \.
 
 
@@ -594,7 +621,7 @@ COPY public."UsuarioMateria" ("idUsuMat", "idUsuario", "idMateria", estado, "fec
 -- Name: Apunte_idApunte_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Apunte_idApunte_seq"', 23, true);
+SELECT pg_catalog.setval('public."Apunte_idApunte_seq"', 32, true);
 
 
 --
@@ -603,7 +630,7 @@ SELECT pg_catalog.setval('public."Apunte_idApunte_seq"', 23, true);
 -- Name: Contenido_idContenido_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Contenido_idContenido_seq"', 3, true);
+SELECT pg_catalog.setval('public."Contenido_idContenido_seq"', 41, true);
 
 
 --
@@ -621,7 +648,7 @@ SELECT pg_catalog.setval('public."Materia_idMateria_seq"', 1, false);
 -- Name: Recordatorio_idRecordatorio_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Recordatorio_idRecordatorio_seq"', 42, true);
+SELECT pg_catalog.setval('public."Recordatorio_idRecordatorio_seq"', 48, true);
 
 
 --
@@ -630,7 +657,7 @@ SELECT pg_catalog.setval('public."Recordatorio_idRecordatorio_seq"', 42, true);
 -- Name: Tema_idTema_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Tema_idTema_seq"', 1, true);
+SELECT pg_catalog.setval('public."Tema_idTema_seq"', 44, true);
 
 
 --
@@ -648,7 +675,7 @@ SELECT pg_catalog.setval('public."Tipo_idTipo_seq"', 1, false);
 -- Name: UsuarioMateria_idUsuMat_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."UsuarioMateria_idUsuMat_seq"', 23, true);
+SELECT pg_catalog.setval('public."UsuarioMateria_idUsuMat_seq"', 26, true);
 
 
 --
@@ -657,7 +684,7 @@ SELECT pg_catalog.setval('public."UsuarioMateria_idUsuMat_seq"', 23, true);
 -- Name: Usuario_idUsuario_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Usuario_idUsuario_seq"', 9, true);
+SELECT pg_catalog.setval('public."Usuario_idUsuario_seq"', 10, true);
 
 
 --
@@ -751,12 +778,12 @@ ALTER TABLE ONLY public."Tema"
 
 
 --
--- TOC entry 4816 (class 2606 OID 17687)
+-- TOC entry 4816 (class 2606 OID 17953)
 -- Name: Tema TemaPadre_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public."Tema"
-    ADD CONSTRAINT "TemaPadre_fkey" FOREIGN KEY ("idTemaPadre") REFERENCES public."Tema"("idTema") NOT VALID;
+    ADD CONSTRAINT "TemaPadre_fkey" FOREIGN KEY ("idTemaPadre") REFERENCES public."Tema"("idTema") ON DELETE CASCADE;
 
 
 --
@@ -813,7 +840,7 @@ ALTER TABLE ONLY public."UsuarioMateria"
     ADD CONSTRAINT "idUsuario" FOREIGN KEY ("idUsuario") REFERENCES public."Usuario"("idUsuario") ON DELETE CASCADE;
 
 
--- Completed on 2025-07-21 02:38:56
+-- Completed on 2025-07-21 19:16:36
 
 --
 -- PostgreSQL database dump complete

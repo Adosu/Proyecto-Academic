@@ -1,32 +1,47 @@
 <div class="contenido-tema-container">
+  <!-- Entrada nueva tipo etiqueta -->
+  <div *ngIf="!mostrarNuevo" class="nuevo-texto-placeholder" (click)="mostrarInputNuevo()">
+    Nuevo contenido...
+  </div>
+
   <!-- Campo para nuevo contenido -->
-  <textarea [(ngModel)]="nuevoContenido" placeholder="Nuevo contenido..."></textarea>
-  <button (click)="agregarContenido()" [disabled]="!nuevoContenido.trim()">Añadir contenido</button>
+  <textarea
+    *ngIf="mostrarNuevo"
+    #nuevoContenidoInput
+    [(ngModel)]="nuevoContenido"
+    placeholder="Nuevo contenido..."
+    (keydown)="detectarTecla($event)"
+    (blur)="blurNuevoContenido()"
+  ></textarea>
 
   <!-- Lista de contenidos -->
   <ul *ngIf="contenidos.length > 0; else sinContenidos" class="lista-contenidos">
     <li *ngFor="let c of contenidos">
-      <!-- Modo edición -->
       <div *ngIf="editandoId === c.idContenido; else verContenido" style="width: 100%;">
         <textarea
+          #inputEditarContenido
           [(ngModel)]="textoTemporal"
-          (keydown.enter)="guardarEdicion(c)"
-          (keydown.escape)="cancelarEdicion()"
-          (blur)="guardarEdicion(c)"
-        ></textarea>
+          (keydown)="detectarTeclaEdicion($event, c)"
+          (blur)="guardarEdicion(c)">
+        </textarea>
       </div>
 
-      <!-- Modo visualización -->
       <ng-template #verContenido>
-        <span (click)="habilitarEdicion(c)" style="flex: 1; cursor: pointer;">
+        <div class="contenido-renderizado" (click)="habilitarEdicion(c)">
           {{ c.texto }}
-        </span>
+        </div>
         <button class="btn-eliminar" (click)="eliminarContenido(c.idContenido)">🗑️</button>
       </ng-template>
     </li>
   </ul>
 
-  <ng-template #sinContenidos>
-    <p class="sub-texto">Este tema aún no tiene contenido.</p>
-  </ng-template>
+  <ng-template #sinContenidos></ng-template>
 </div>
+
+<app-modal-confirmacion
+  [visible]="modalVisible"
+  [titulo]="modalTitulo"
+  [mensaje]="modalMensaje"
+  (aceptar)="confirmarEliminacionContenido()"
+  (cancelar)="cancelarEliminacionContenido()">
+</app-modal-confirmacion>

@@ -46,6 +46,14 @@ button[disabled] {
   align-items: center;
 }
 
+.lista-contenidos li div {
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  padding: 4px 6px;
+  width: 100%;
+}
+
 .btn-eliminar {
   background: none;
   border: none;
@@ -57,4 +65,37 @@ button[disabled] {
 .sub-texto {
   font-style: italic;
   color: #666;
+}
+
+span.contenido-texto {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 14px;
+  padding: 4px 8px;
+  display: block;
+}
+
+.contenido-renderizado {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 14px;
+  padding: 6px 0;
+  background-color: #e3ebf5;
+  border-radius: 4px;
+  display: block;
+  cursor: pointer;
+}
+
+.nuevo-texto-placeholder {
+  font-size: 14px;
+  font-style: italic;
+  color: #888;
+  padding: 8px;
+  cursor: text;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.nuevo-texto-placeholder:hover {
+  background-color: #e3eaf4;
 }

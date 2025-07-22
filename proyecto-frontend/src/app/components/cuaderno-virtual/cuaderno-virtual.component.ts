@@ -13,6 +13,10 @@ export class CuadernoVirtualComponent implements OnInit {
   idMateria!: number;
   apuntes: Apunte[] = [];
   apunteSeleccionado?: Apunte;
+  modalVisible: boolean = false;
+  modalTitulo: string = '';
+  modalMensaje: string = '';
+  apuntePendiente?: Apunte;
 
   mostrarFormulario: boolean = false;
   nuevoTitulo: string = '';
@@ -107,18 +111,31 @@ export class CuadernoVirtualComponent implements OnInit {
   }
 
   confirmarEliminar(apunte: Apunte): void {
-    const confirmacion = confirm('¿Estás seguro que deseas eliminar este apunte?\nSe perderá todo su contenido.');
-    if (!confirmacion) return;
+    this.apuntePendiente = apunte;
+    this.modalTitulo = 'Confirmar eliminación';
+    this.modalMensaje = '¿Estás seguro que deseas eliminar este apunte? Se eliminará todo el contenido que contiene.';
+    this.modalVisible = true;
+  }
 
-    this.apunteService.eliminarApunte(apunte.idApunte).subscribe({
+  eliminarConfirmado(): void {
+    if (!this.apuntePendiente) return;
+
+    this.apunteService.eliminarApunte(this.apuntePendiente.idApunte).subscribe({
       next: () => {
-        this.apuntes = this.apuntes.filter(a => a.idApunte !== apunte.idApunte);
-        if (this.apunteSeleccionado?.idApunte === apunte.idApunte) {
+        this.apuntes = this.apuntes.filter(a => a.idApunte !== this.apuntePendiente?.idApunte);
+        if (this.apunteSeleccionado?.idApunte === this.apuntePendiente?.idApunte) {
           this.apunteSeleccionado = this.apuntes[0] || undefined;
         }
+        this.modalVisible = false;
+        this.apuntePendiente = undefined;
       },
       error: (err) => console.error('Error al eliminar apunte:', err)
     });
+  }
+
+  cancelarEliminacion(): void {
+    this.modalVisible = false;
+    this.apuntePendiente = undefined;
   }
 
   seleccionarApunte(apunte: Apunte): void {

@@ -24,6 +24,7 @@ import { RecordatorioComponent } from './components/recordatorio/recordatorio.co
 import { CuadernoVirtualComponent } from './components/cuaderno-virtual/cuaderno-virtual.component';
 import { ContenidoApunteComponent } from './components/contenido-apunte/contenido-apunte.component';
 import { ContenidoTemaComponent } from './components/contenido-tema/contenido-tema.component';
+import { ModalConfirmacionComponent } from './components/modal-confirmacion/modal-confirmacion.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { ContenidoTemaComponent } from './components/contenido-tema/contenido-te
     CuadernoVirtualComponent,
     ContenidoApunteComponent,
     ContenidoTemaComponent,
+    ModalConfirmacionComponent,
   ],
   imports: [
     BrowserModule,
