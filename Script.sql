@@ -5,7 +5,7 @@
 -- Dumped from database version 17.4
 -- Dumped by pg_dump version 17.4
 
--- Started on 2025-07-22 01:09:50
+-- Started on 2025-07-22 08:49:10
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -18,6 +18,63 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
+
+--
+-- TOC entry 237 (class 1255 OID 17992)
+-- Name: actualizar_estado_recordatorio(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.actualizar_estado_recordatorio() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW."fechaLimite" < CURRENT_DATE AND NEW.estado = 'Activo' THEN
+    NEW.estado := 'Vencido';
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.actualizar_estado_recordatorio() OWNER TO postgres;
+
+--
+-- TOC entry 238 (class 1255 OID 17994)
+-- Name: set_estado_activo(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.set_estado_activo() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW.estado IS NULL THEN
+    NEW.estado := 'Activo';
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.set_estado_activo() OWNER TO postgres;
+
+--
+-- TOC entry 236 (class 1255 OID 17985)
+-- Name: set_fecha_registro(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.set_fecha_registro() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW."fechaRegistro" IS NULL THEN
+    NEW."fechaRegistro" := CURRENT_DATE;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION public.set_fecha_registro() OWNER TO postgres;
 
 SET default_tablespace = '';
 
@@ -56,7 +113,7 @@ CREATE SEQUENCE public."Apunte_idApunte_seq"
 ALTER SEQUENCE public."Apunte_idApunte_seq" OWNER TO postgres;
 
 --
--- TOC entry 4976 (class 0 OID 0)
+-- TOC entry 5001 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: Apunte_idApunte_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -95,7 +152,7 @@ CREATE SEQUENCE public."Contenido_idContenido_seq"
 ALTER SEQUENCE public."Contenido_idContenido_seq" OWNER TO postgres;
 
 --
--- TOC entry 4977 (class 0 OID 0)
+-- TOC entry 5002 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: Contenido_idContenido_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -140,7 +197,7 @@ CREATE SEQUENCE public."Materia_idMateria_seq"
 ALTER SEQUENCE public."Materia_idMateria_seq" OWNER TO postgres;
 
 --
--- TOC entry 4978 (class 0 OID 0)
+-- TOC entry 5003 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: Materia_idMateria_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -184,7 +241,7 @@ CREATE SEQUENCE public."Recordatorio_idRecordatorio_seq"
 ALTER SEQUENCE public."Recordatorio_idRecordatorio_seq" OWNER TO postgres;
 
 --
--- TOC entry 4979 (class 0 OID 0)
+-- TOC entry 5004 (class 0 OID 0)
 -- Dependencies: 224
 -- Name: Recordatorio_idRecordatorio_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -224,7 +281,7 @@ CREATE SEQUENCE public."Tema_idTema_seq"
 ALTER SEQUENCE public."Tema_idTema_seq" OWNER TO postgres;
 
 --
--- TOC entry 4980 (class 0 OID 0)
+-- TOC entry 5005 (class 0 OID 0)
 -- Dependencies: 226
 -- Name: Tema_idTema_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -283,7 +340,7 @@ CREATE SEQUENCE public."UsuarioMateria_idUsuMat_seq"
 ALTER SEQUENCE public."UsuarioMateria_idUsuMat_seq" OWNER TO postgres;
 
 --
--- TOC entry 4981 (class 0 OID 0)
+-- TOC entry 5006 (class 0 OID 0)
 -- Dependencies: 229
 -- Name: UsuarioMateria_idUsuMat_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -308,7 +365,7 @@ CREATE SEQUENCE public."Usuario_idUsuario_seq"
 ALTER SEQUENCE public."Usuario_idUsuario_seq" OWNER TO postgres;
 
 --
--- TOC entry 4982 (class 0 OID 0)
+-- TOC entry 5007 (class 0 OID 0)
 -- Dependencies: 230
 -- Name: Usuario_idUsuario_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -317,42 +374,112 @@ ALTER SEQUENCE public."Usuario_idUsuario_seq" OWNED BY public."Usuario"."idUsuar
 
 
 --
--- TOC entry 231 (class 1259 OID 17645)
--- Name: recordatoriosporusuario; Type: VIEW; Schema: public; Owner: postgres
+-- TOC entry 233 (class 1259 OID 17967)
+-- Name: apuntes_por_materia; Type: VIEW; Schema: public; Owner: postgres
 --
 
-CREATE VIEW public.recordatoriosporusuario AS
- SELECT "idUsuario",
-    count(*) FILTER (WHERE (estado = 'Pendiente'::text)) AS pendientes,
-    count(*) FILTER (WHERE (estado = 'Realizado'::text)) AS realizados,
-    count(*) AS total
-   FROM public."Recordatorio"
-  GROUP BY "idUsuario";
-
-
-ALTER VIEW public.recordatoriosporusuario OWNER TO postgres;
-
---
--- TOC entry 232 (class 1259 OID 17653)
--- Name: usuariomaterias; Type: VIEW; Schema: public; Owner: postgres
---
-
-CREATE VIEW public.usuariomaterias AS
- SELECT um."idUsuMat",
-    ((u.nombre || ' '::text) || u.apellido) AS usuario,
+CREATE VIEW public.apuntes_por_materia AS
+ SELECT a."idApunte",
+    a."idUsuMat",
+    u.nombre AS nombre_usuario,
+    u.apellido AS apellido_usuario,
     m."nombreMateria",
-    m."cursoParalelo"
+    m."cursoParalelo",
+    a.fecha,
+    a.titulo,
+    a.resumen
+   FROM (((public."Apunte" a
+     JOIN public."UsuarioMateria" um ON ((a."idUsuMat" = um."idUsuMat")))
+     JOIN public."Usuario" u ON ((um."idUsuario" = u."idUsuario")))
+     JOIN public."Materia" m ON ((um."idMateria" = m."idMateria")))
+  ORDER BY u.nombre, u.apellido;
+
+
+ALTER VIEW public.apuntes_por_materia OWNER TO postgres;
+
+--
+-- TOC entry 235 (class 1259 OID 17981)
+-- Name: contenidos_por_tema; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.contenidos_por_tema AS
+ SELECT c."idContenido",
+    c."idTema",
+    t.nombre AS nombre_tema,
+    t."idTemaPadre",
+    c.texto
+   FROM (public."Contenido" c
+     JOIN public."Tema" t ON ((c."idTema" = t."idTema")))
+  ORDER BY t."idTemaPadre" NULLS FIRST, t."idTema", c."idContenido";
+
+
+ALTER VIEW public.contenidos_por_tema OWNER TO postgres;
+
+--
+-- TOC entry 232 (class 1259 OID 17962)
+-- Name: materias_inscritas_por_usuario; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.materias_inscritas_por_usuario AS
+ SELECT um."idUsuMat",
+    um."idUsuario",
+    u.nombre AS nombre_usuario,
+    u.apellido AS apellido_usuario,
+    um."idMateria",
+    m."nombreMateria",
+    m."cursoParalelo",
+    um.estado,
+    um."fechaRegistro"
    FROM ((public."UsuarioMateria" um
      JOIN public."Usuario" u ON ((um."idUsuario" = u."idUsuario")))
      JOIN public."Materia" m ON ((um."idMateria" = m."idMateria")))
-  WHERE (um.estado = 'Activo'::text)
-  ORDER BY ((u.nombre || ' '::text) || u.apellido);
+  ORDER BY u.nombre, u.apellido;
 
 
-ALTER VIEW public.usuariomaterias OWNER TO postgres;
+ALTER VIEW public.materias_inscritas_por_usuario OWNER TO postgres;
 
 --
--- TOC entry 4780 (class 2604 OID 17658)
+-- TOC entry 231 (class 1259 OID 17958)
+-- Name: recordatorios_por_usuario; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.recordatorios_por_usuario AS
+ SELECT r."idRecordatorio",
+    r."idUsuario",
+    u.nombre,
+    u.apellido,
+    r."fechaLimite",
+    r.titulo,
+    r.descripcion,
+    r.estado,
+    r."fechaRegistro",
+    r.hora
+   FROM (public."Recordatorio" r
+     JOIN public."Usuario" u ON ((r."idUsuario" = u."idUsuario")));
+
+
+ALTER VIEW public.recordatorios_por_usuario OWNER TO postgres;
+
+--
+-- TOC entry 234 (class 1259 OID 17972)
+-- Name: temas_por_apunte; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.temas_por_apunte AS
+ SELECT t."idTema",
+    t."idApunte",
+    a.titulo AS titulo_apunte,
+    t."idTemaPadre",
+    t.nombre
+   FROM (public."Tema" t
+     JOIN public."Apunte" a ON ((t."idApunte" = a."idApunte")))
+  ORDER BY a.titulo, t."idTemaPadre" NULLS FIRST, t."idTema";
+
+
+ALTER VIEW public.temas_por_apunte OWNER TO postgres;
+
+--
+-- TOC entry 4795 (class 2604 OID 17658)
 -- Name: Apunte idApunte; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -360,7 +487,7 @@ ALTER TABLE ONLY public."Apunte" ALTER COLUMN "idApunte" SET DEFAULT nextval('pu
 
 
 --
--- TOC entry 4781 (class 2604 OID 17659)
+-- TOC entry 4796 (class 2604 OID 17659)
 -- Name: Contenido idContenido; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -368,7 +495,7 @@ ALTER TABLE ONLY public."Contenido" ALTER COLUMN "idContenido" SET DEFAULT nextv
 
 
 --
--- TOC entry 4782 (class 2604 OID 17660)
+-- TOC entry 4797 (class 2604 OID 17660)
 -- Name: Materia idMateria; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -376,7 +503,7 @@ ALTER TABLE ONLY public."Materia" ALTER COLUMN "idMateria" SET DEFAULT nextval('
 
 
 --
--- TOC entry 4783 (class 2604 OID 17661)
+-- TOC entry 4798 (class 2604 OID 17661)
 -- Name: Recordatorio idRecordatorio; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -384,7 +511,7 @@ ALTER TABLE ONLY public."Recordatorio" ALTER COLUMN "idRecordatorio" SET DEFAULT
 
 
 --
--- TOC entry 4784 (class 2604 OID 17662)
+-- TOC entry 4799 (class 2604 OID 17662)
 -- Name: Tema idTema; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -392,7 +519,7 @@ ALTER TABLE ONLY public."Tema" ALTER COLUMN "idTema" SET DEFAULT nextval('public
 
 
 --
--- TOC entry 4785 (class 2604 OID 17664)
+-- TOC entry 4800 (class 2604 OID 17664)
 -- Name: Usuario idUsuario; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -400,7 +527,7 @@ ALTER TABLE ONLY public."Usuario" ALTER COLUMN "idUsuario" SET DEFAULT nextval('
 
 
 --
--- TOC entry 4786 (class 2604 OID 17665)
+-- TOC entry 4801 (class 2604 OID 17665)
 -- Name: UsuarioMateria idUsuMat; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -408,27 +535,39 @@ ALTER TABLE ONLY public."UsuarioMateria" ALTER COLUMN "idUsuMat" SET DEFAULT nex
 
 
 --
--- TOC entry 4957 (class 0 OID 17597)
+-- TOC entry 4982 (class 0 OID 17597)
 -- Dependencies: 217
 -- Data for Name: Apunte; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."Apunte" ("idApunte", "idUsuMat", fecha, titulo, resumen) FROM stdin;
+1	1	2025-07-22	Fundamento de Base de Datos	
+6	1	2025-07-22	Funciones	
+7	7	2025-07-22	Apunte de ejemplo	
 \.
 
 
 --
--- TOC entry 4959 (class 0 OID 17603)
+-- TOC entry 4984 (class 0 OID 17603)
 -- Dependencies: 219
 -- Data for Name: Contenido; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."Contenido" ("idContenido", "idTema", texto) FROM stdin;
+8	13	contenido de ejemplo
+9	14	contenido 2
+10	15	contenido 3
+1	6	Una tabla representa una relación.
+2	7	Una fila (tupla) representa un registro.
+3	8	Una columna (atributo) representa una propiedad del registro.
+4	5	En bases de datos, una clave primaria identifica de forma única cada registro en una tabla, mientras que una clave secundaria es una columna o conjunto de columnas que hacen referencia a la clave primaria de otra tabla
+5	9	Identifica de forma única cada fila.
+6	10	Establece relaciones entre tablas.
 \.
 
 
 --
--- TOC entry 4961 (class 0 OID 17609)
+-- TOC entry 4986 (class 0 OID 17609)
 -- Dependencies: 221
 -- Data for Name: Materia; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -443,65 +582,92 @@ COPY public."Materia" ("idMateria", "nombreMateria", "cursoParalelo", "nombreDoc
 
 
 --
--- TOC entry 4963 (class 0 OID 17615)
+-- TOC entry 4988 (class 0 OID 17615)
 -- Dependencies: 223
 -- Data for Name: Recordatorio; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."Recordatorio" ("idRecordatorio", "idUsuario", "fechaLimite", titulo, descripcion, estado, "fechaRegistro", hora) FROM stdin;
+1	1	2025-07-22	Proyecto BD	Presentar proyecto de BD\n	Activo	2025-07-22	07:30
+2	1	2025-07-22	Proyecto TW		Activo	2025-07-22	07:30
+3	1	2025-07-16	Prueba  BD		Vencido	2025-07-22	09:30
+4	1	2025-07-10	Prueba TW		Vencido	2025-07-22	08:40
+5	3	2025-07-24	Recordatorio de ejemplo	Descripción de ejemplo	Activo	2025-07-22	12:40
 \.
 
 
 --
--- TOC entry 4965 (class 0 OID 17621)
+-- TOC entry 4990 (class 0 OID 17621)
 -- Dependencies: 225
 -- Data for Name: Tema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."Tema" ("idTema", "idApunte", "idTemaPadre", nombre) FROM stdin;
+1	1	\N	Modelo Relacional
+2	1	\N	Normalización
+3	1	\N	Lenguaje SQL
+4	1	1	Tablas, Filas y Columnas
+5	1	1	Claves Primarias y Secundarias
+6	1	4	Tabla
+7	1	4	Fila
+8	1	4	Columna
+9	1	5	Primarias
+10	1	5	Secundarias
+13	7	\N	Tema padre de ejemplo
+14	7	13	subtema de ejemplo
+15	7	14	subtema 2 de ejemplo
 \.
 
 
 --
--- TOC entry 4967 (class 0 OID 17633)
+-- TOC entry 4992 (class 0 OID 17633)
 -- Dependencies: 227
 -- Data for Name: Usuario; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."Usuario" ("idUsuario", nombre, apellido, correo, contrasena, estado, "fechaRegistro") FROM stdin;
+1	Alex Ariel	Niola Toro	niolatoro@hotmail.com	Ados123@	Activo	2025-07-22
+2	Jimmy Fernando	Carchipulla Camacho	jimmycarchipulla4523@gmail.com	Jimmy123@	Activo	2025-07-22
+3	Anthony	Murillo	murillo@hotmail.com	Murillo123@	Activo	2025-07-22
 \.
 
 
 --
--- TOC entry 4968 (class 0 OID 17638)
+-- TOC entry 4993 (class 0 OID 17638)
 -- Dependencies: 228
 -- Data for Name: UsuarioMateria; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."UsuarioMateria" ("idUsuMat", "idUsuario", "idMateria", estado, "fechaRegistro") FROM stdin;
+1	1	1	Activo	2025-07-22
+2	1	5	Activo	2025-07-22
+3	1	2	Activo	2025-07-22
+4	1	3	Activo	2025-07-22
+6	1	4	Activo	2025-07-22
+7	3	1	Activo	2025-07-22
 \.
 
 
 --
--- TOC entry 4983 (class 0 OID 0)
+-- TOC entry 5008 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: Apunte_idApunte_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Apunte_idApunte_seq"', 1, false);
+SELECT pg_catalog.setval('public."Apunte_idApunte_seq"', 7, true);
 
 
 --
--- TOC entry 4984 (class 0 OID 0)
+-- TOC entry 5009 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: Contenido_idContenido_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Contenido_idContenido_seq"', 1, false);
+SELECT pg_catalog.setval('public."Contenido_idContenido_seq"', 10, true);
 
 
 --
--- TOC entry 4985 (class 0 OID 0)
+-- TOC entry 5010 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: Materia_idMateria_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -510,43 +676,43 @@ SELECT pg_catalog.setval('public."Materia_idMateria_seq"', 5, true);
 
 
 --
--- TOC entry 4986 (class 0 OID 0)
+-- TOC entry 5011 (class 0 OID 0)
 -- Dependencies: 224
 -- Name: Recordatorio_idRecordatorio_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Recordatorio_idRecordatorio_seq"', 1, false);
+SELECT pg_catalog.setval('public."Recordatorio_idRecordatorio_seq"', 5, true);
 
 
 --
--- TOC entry 4987 (class 0 OID 0)
+-- TOC entry 5012 (class 0 OID 0)
 -- Dependencies: 226
 -- Name: Tema_idTema_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Tema_idTema_seq"', 1, false);
+SELECT pg_catalog.setval('public."Tema_idTema_seq"', 15, true);
 
 
 --
--- TOC entry 4988 (class 0 OID 0)
+-- TOC entry 5013 (class 0 OID 0)
 -- Dependencies: 229
 -- Name: UsuarioMateria_idUsuMat_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."UsuarioMateria_idUsuMat_seq"', 1, false);
+SELECT pg_catalog.setval('public."UsuarioMateria_idUsuMat_seq"', 7, true);
 
 
 --
--- TOC entry 4989 (class 0 OID 0)
+-- TOC entry 5014 (class 0 OID 0)
 -- Dependencies: 230
 -- Name: Usuario_idUsuario_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Usuario_idUsuario_seq"', 1, false);
+SELECT pg_catalog.setval('public."Usuario_idUsuario_seq"', 3, true);
 
 
 --
--- TOC entry 4788 (class 2606 OID 17667)
+-- TOC entry 4803 (class 2606 OID 17667)
 -- Name: Apunte Apunte_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -555,7 +721,7 @@ ALTER TABLE ONLY public."Apunte"
 
 
 --
--- TOC entry 4790 (class 2606 OID 17669)
+-- TOC entry 4805 (class 2606 OID 17669)
 -- Name: Contenido Contenido_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -564,7 +730,7 @@ ALTER TABLE ONLY public."Contenido"
 
 
 --
--- TOC entry 4792 (class 2606 OID 17671)
+-- TOC entry 4807 (class 2606 OID 17671)
 -- Name: Materia Materia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -573,7 +739,7 @@ ALTER TABLE ONLY public."Materia"
 
 
 --
--- TOC entry 4794 (class 2606 OID 17673)
+-- TOC entry 4809 (class 2606 OID 17673)
 -- Name: Recordatorio Recordatorio_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -582,7 +748,7 @@ ALTER TABLE ONLY public."Recordatorio"
 
 
 --
--- TOC entry 4796 (class 2606 OID 17675)
+-- TOC entry 4811 (class 2606 OID 17675)
 -- Name: Tema Tema_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -591,7 +757,7 @@ ALTER TABLE ONLY public."Tema"
 
 
 --
--- TOC entry 4802 (class 2606 OID 17679)
+-- TOC entry 4817 (class 2606 OID 17679)
 -- Name: UsuarioMateria UsuarioMateria_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -600,7 +766,7 @@ ALTER TABLE ONLY public."UsuarioMateria"
 
 
 --
--- TOC entry 4798 (class 2606 OID 17681)
+-- TOC entry 4813 (class 2606 OID 17681)
 -- Name: Usuario Usuario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -609,7 +775,7 @@ ALTER TABLE ONLY public."Usuario"
 
 
 --
--- TOC entry 4800 (class 2606 OID 17723)
+-- TOC entry 4815 (class 2606 OID 17723)
 -- Name: Usuario correo_unico; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -618,7 +784,63 @@ ALTER TABLE ONLY public."Usuario"
 
 
 --
--- TOC entry 4806 (class 2606 OID 17933)
+-- TOC entry 4825 (class 2620 OID 17993)
+-- Name: Recordatorio trg_actualizar_estado_recordatorio; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER trg_actualizar_estado_recordatorio BEFORE INSERT OR UPDATE ON public."Recordatorio" FOR EACH ROW EXECUTE FUNCTION public.actualizar_estado_recordatorio();
+
+
+--
+-- TOC entry 4826 (class 2620 OID 17997)
+-- Name: Recordatorio trg_estado_recordatorio; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER trg_estado_recordatorio BEFORE INSERT ON public."Recordatorio" FOR EACH ROW EXECUTE FUNCTION public.set_estado_activo();
+
+
+--
+-- TOC entry 4828 (class 2620 OID 17995)
+-- Name: Usuario trg_estado_usuario; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER trg_estado_usuario BEFORE INSERT ON public."Usuario" FOR EACH ROW EXECUTE FUNCTION public.set_estado_activo();
+
+
+--
+-- TOC entry 4830 (class 2620 OID 17996)
+-- Name: UsuarioMateria trg_estado_usuariomateria; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER trg_estado_usuariomateria BEFORE INSERT ON public."UsuarioMateria" FOR EACH ROW EXECUTE FUNCTION public.set_estado_activo();
+
+
+--
+-- TOC entry 4827 (class 2620 OID 17989)
+-- Name: Recordatorio trg_set_fecha_registro_recordatorio; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER trg_set_fecha_registro_recordatorio BEFORE INSERT ON public."Recordatorio" FOR EACH ROW EXECUTE FUNCTION public.set_fecha_registro();
+
+
+--
+-- TOC entry 4829 (class 2620 OID 17986)
+-- Name: Usuario trg_set_fecha_registro_usuario; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER trg_set_fecha_registro_usuario BEFORE INSERT ON public."Usuario" FOR EACH ROW EXECUTE FUNCTION public.set_fecha_registro();
+
+
+--
+-- TOC entry 4831 (class 2620 OID 17987)
+-- Name: UsuarioMateria trg_set_fecha_registro_usuariomateria; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER trg_set_fecha_registro_usuariomateria BEFORE INSERT ON public."UsuarioMateria" FOR EACH ROW EXECUTE FUNCTION public.set_fecha_registro();
+
+
+--
+-- TOC entry 4821 (class 2606 OID 17933)
 -- Name: Tema Apunte_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -627,7 +849,7 @@ ALTER TABLE ONLY public."Tema"
 
 
 --
--- TOC entry 4807 (class 2606 OID 17953)
+-- TOC entry 4822 (class 2606 OID 17953)
 -- Name: Tema TemaPadre_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -636,7 +858,7 @@ ALTER TABLE ONLY public."Tema"
 
 
 --
--- TOC entry 4804 (class 2606 OID 17928)
+-- TOC entry 4819 (class 2606 OID 17928)
 -- Name: Contenido Tema_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -645,7 +867,7 @@ ALTER TABLE ONLY public."Contenido"
 
 
 --
--- TOC entry 4805 (class 2606 OID 17948)
+-- TOC entry 4820 (class 2606 OID 17948)
 -- Name: Recordatorio Usuario_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -654,7 +876,7 @@ ALTER TABLE ONLY public."Recordatorio"
 
 
 --
--- TOC entry 4808 (class 2606 OID 17707)
+-- TOC entry 4823 (class 2606 OID 17707)
 -- Name: UsuarioMateria idMateria; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -663,7 +885,7 @@ ALTER TABLE ONLY public."UsuarioMateria"
 
 
 --
--- TOC entry 4803 (class 2606 OID 17938)
+-- TOC entry 4818 (class 2606 OID 17938)
 -- Name: Apunte idUsuMat; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -672,7 +894,7 @@ ALTER TABLE ONLY public."Apunte"
 
 
 --
--- TOC entry 4809 (class 2606 OID 17943)
+-- TOC entry 4824 (class 2606 OID 17943)
 -- Name: UsuarioMateria idUsuario; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -680,7 +902,7 @@ ALTER TABLE ONLY public."UsuarioMateria"
     ADD CONSTRAINT "idUsuario" FOREIGN KEY ("idUsuario") REFERENCES public."Usuario"("idUsuario") ON DELETE CASCADE;
 
 
--- Completed on 2025-07-22 01:09:50
+-- Completed on 2025-07-22 08:49:11
 
 --
 -- PostgreSQL database dump complete
