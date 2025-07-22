@@ -90,3 +90,22 @@ input {
   display: block;
   margin-top: 4px;
 }
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper input {
+  padding-right: 40px;
+}
+
+.ojo-btn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}

@@ -79,9 +79,14 @@ export class CursosComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {
+    if (!this.dropdownMenus || this.dropdownMenus.length === 0) {
+      return; // Evita error si aún no hay menús cargados
+    }
+
     const clickedInsideAnyMenu = this.dropdownMenus.some(
       (menu) => menu.nativeElement.contains(event.target)
     );
+
     if (!clickedInsideAnyMenu) {
       this.menuAbierto = null;
     }

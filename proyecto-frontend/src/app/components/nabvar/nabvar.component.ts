@@ -58,6 +58,10 @@ export class NabvarComponent implements OnInit {
     this.router.navigate(['/actividades']);
   }
 
+  irACalendario() {
+    this.router.navigate(['/calendario']);
+  }
+
   logout() {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);

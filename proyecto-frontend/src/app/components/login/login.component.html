@@ -5,10 +5,23 @@
 
     <h4 class="subtitulo">Autenticación:</h4>
 
-    <input type="email" [(ngModel)]="correo" placeholder="Correo electrónico" />
-    <input type="password" [(ngModel)]="contrasena" placeholder="Contraseña" />
-
-    <button (click)="login()">Acceder</button>
+    <form (ngSubmit)="login()">
+      <input
+        type="email"
+        [(ngModel)]="correo"
+        name="correo"
+        placeholder="Correo electrónico"
+        required
+      />
+      <input
+        type="password"
+        [(ngModel)]="contrasena"
+        name="contrasena"
+        placeholder="Contraseña"
+        required
+      />
+      <button type="submit">Acceder</button>
+    </form>
 
     <div class="error" *ngIf="error">{{ error }}</div>
 

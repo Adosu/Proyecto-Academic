@@ -83,3 +83,31 @@ input {
 .cancelar-btn:hover {
   background-color: #8e0000;
 }
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 10px 38px 10px 10px; /* espacio para el ícono */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.ojo-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.ojo-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: #777;
+}

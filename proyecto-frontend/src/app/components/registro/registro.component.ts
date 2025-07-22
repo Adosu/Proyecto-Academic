@@ -12,21 +12,24 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class RegistroComponent implements OnInit {
   registroForm!: FormGroup;
+  mostrarContrasena = false;
+  mostrarConfirmar = false;
 
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
     private router: Router,
     private snackBar: MatSnackBar
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.registroForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(4)]],
       apellido: ['', [Validators.required, Validators.minLength(4)]],
       correo: ['', [Validators.required, Validators.email]],
-      contrasena: ['', [Validators.required, Validators.minLength(8), this.passwordValidator]]
-    });
+      contrasena: ['', [Validators.required, Validators.minLength(8), this.passwordValidator]],
+      confirmar: ['', [Validators.required]]
+    }, { validators: this.matchPasswords });
   }
 
   cancelar(): void {
@@ -41,6 +44,12 @@ export class RegistroComponent implements OnInit {
     const hasSpecial = /[^A-Za-z0-9]/.test(value);
     const valid = hasUpper && hasLower && hasDigit && hasSpecial;
     return valid ? null : { invalidPassword: true };
+  }
+
+  matchPasswords(group: AbstractControl): ValidationErrors | null {
+    const pass = group.get('contrasena')?.value;
+    const confirm = group.get('confirmar')?.value;
+    return pass === confirm ? null : { mismatch: true };
   }
 
   get f() {

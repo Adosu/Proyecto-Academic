@@ -25,6 +25,7 @@ import { CuadernoVirtualComponent } from './components/cuaderno-virtual/cuaderno
 import { ContenidoApunteComponent } from './components/contenido-apunte/contenido-apunte.component';
 import { ContenidoTemaComponent } from './components/contenido-tema/contenido-tema.component';
 import { ModalConfirmacionComponent } from './components/modal-confirmacion/modal-confirmacion.component';
+import { CalendarioComponent } from './components/calendario/calendario.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { ModalConfirmacionComponent } from './components/modal-confirmacion/moda
     ContenidoApunteComponent,
     ContenidoTemaComponent,
     ModalConfirmacionComponent,
+    CalendarioComponent,
   ],
   imports: [
     BrowserModule,

@@ -10,6 +10,7 @@ import { PerfilComponent } from './components/perfil/perfil.component';
 import { RegistroComponent } from './components/registro/registro.component';
 import { CuadernoVirtualComponent } from './components/cuaderno-virtual/cuaderno-virtual.component';
 import { AuthGuard } from './guards/auth.guard';
+import { CalendarioComponent } from './components/calendario/calendario.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -21,7 +22,8 @@ const routes: Routes = [
   { path: 'recordatorio', component: RecordatorioComponent, canActivate: [AuthGuard] },
   { path: 'cursos', component: CursosComponent, canActivate: [AuthGuard] },
   { path: 'cuaderno-virtual/:id', component: CuadernoVirtualComponent, canActivate: [AuthGuard] },
-  { path: 'detalle-materia/:id', component: DetalleMateriaComponent, canActivate: [AuthGuard] }
+  { path: 'detalle-materia/:id', component: DetalleMateriaComponent, canActivate: [AuthGuard] },
+  { path: 'calendario', component: CalendarioComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

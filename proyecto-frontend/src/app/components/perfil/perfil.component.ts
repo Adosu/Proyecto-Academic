@@ -14,6 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class PerfilComponent implements OnInit {
   perfilForm!: FormGroup;
+  mostrarContrasena: boolean = false;
 
   constructor(
     private fb: FormBuilder,
