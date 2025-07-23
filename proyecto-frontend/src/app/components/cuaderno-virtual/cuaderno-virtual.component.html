@@ -1,6 +1,6 @@
 <div class="cuaderno-container">
   <div class="sidebar">
-    <h3>Mis Apuntes</h3>
+    <h3>Mis Apuntes <span *ngIf="materiaSeleccionada">– {{ materiaSeleccionada.nombreMateria }}</span></h3>
     <button class="nuevo-btn" (click)="toggleFormulario()">
       {{ mostrarFormulario ? 'Cancelar' : (modoEdicion ? 'Editar apunte' : '+ Nuevo apunte') }}
     </button>

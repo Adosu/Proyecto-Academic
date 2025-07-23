@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Apunte, ApunteService } from '../../services/apunte.service';
 import { ActivatedRoute } from '@angular/router';
+import { Materia, MateriaService } from '../../services/materia.service';
 
 @Component({
   selector: 'app-cuaderno-virtual',
@@ -17,6 +18,7 @@ export class CuadernoVirtualComponent implements OnInit {
   modalTitulo: string = '';
   modalMensaje: string = '';
   apuntePendiente?: Apunte;
+  materiaSeleccionada?: Materia;
 
   mostrarFormulario: boolean = false;
   nuevoTitulo: string = '';
@@ -28,12 +30,23 @@ export class CuadernoVirtualComponent implements OnInit {
 
   constructor(
     private apunteService: ApunteService,
+    private materiaService: MateriaService,
     private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.idMateria = Number(this.route.snapshot.paramMap.get('id'));
+    this.obtenerMateria();
     this.cargarApuntes();
+  }
+
+  obtenerMateria(): void {
+    this.materiaService.getMaterias().subscribe({
+      next: (materias) => {
+        this.materiaSeleccionada = materias.find(m => m.idMateria === this.idMateria);
+      },
+      error: (err) => console.error('Error al obtener materia:', err)
+    });
   }
 
   cargarApuntes(): void {

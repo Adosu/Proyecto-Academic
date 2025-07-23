@@ -5,7 +5,7 @@
 -- Dumped from database version 17.4
 -- Dumped by pg_dump version 17.4
 
--- Started on 2025-07-22 08:49:10
+-- Started on 2025-07-23 11:13:52
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -544,6 +544,9 @@ COPY public."Apunte" ("idApunte", "idUsuMat", fecha, titulo, resumen) FROM stdin
 1	1	2025-07-22	Fundamento de Base de Datos	
 6	1	2025-07-22	Funciones	
 7	7	2025-07-22	Apunte de ejemplo	
+8	2	2025-07-22	Direcciones IP y Subnetting	
+9	1	2025-07-22	Apunte3	
+10	9	2025-07-22	Apunte 1	
 \.
 
 
@@ -557,6 +560,10 @@ COPY public."Contenido" ("idContenido", "idTema", texto) FROM stdin;
 8	13	contenido de ejemplo
 9	14	contenido 2
 10	15	contenido 3
+11	18	Dirección de 32 bits (ejemplo: 192.168.0.1)
+12	19	Dirección de 128 bits para reemplazar IPv4 (ejemplo: 2001:0db8::1)
+13	20	Permite dividir redes grandes en subredes más pequeñas (ejemplo: 255.255.255.0)
+14	21	Representación de subredes con barra diagonal (ejemplo: 192.168.1.0/24)
 1	6	Una tabla representa una relación.
 2	7	Una fila (tupla) representa un registro.
 3	8	Una columna (atributo) representa una propiedad del registro.
@@ -593,6 +600,7 @@ COPY public."Recordatorio" ("idRecordatorio", "idUsuario", "fechaLimite", titulo
 3	1	2025-07-16	Prueba  BD		Vencido	2025-07-22	09:30
 4	1	2025-07-10	Prueba TW		Vencido	2025-07-22	08:40
 5	3	2025-07-24	Recordatorio de ejemplo	Descripción de ejemplo	Activo	2025-07-22	12:40
+7	1	2025-07-23	Prueba  BD		Activo	2025-07-22	10:09
 \.
 
 
@@ -616,6 +624,14 @@ COPY public."Tema" ("idTema", "idApunte", "idTemaPadre", nombre) FROM stdin;
 13	7	\N	Tema padre de ejemplo
 14	7	13	subtema de ejemplo
 15	7	14	subtema 2 de ejemplo
+16	8	\N	Direcciones IP
+17	8	\N	Subnetting
+18	8	16	IPv4
+19	8	16	IPv6
+20	8	17	Máscara de subred
+21	8	17	CIDR
+23	10	\N	Tema 2
+24	10	\N	Tema 3
 \.
 
 
@@ -629,6 +645,7 @@ COPY public."Usuario" ("idUsuario", nombre, apellido, correo, contrasena, estado
 1	Alex Ariel	Niola Toro	niolatoro@hotmail.com	Ados123@	Activo	2025-07-22
 2	Jimmy Fernando	Carchipulla Camacho	jimmycarchipulla4523@gmail.com	Jimmy123@	Activo	2025-07-22
 3	Anthony	Murillo	murillo@hotmail.com	Murillo123@	Activo	2025-07-22
+7	Mauricio	Perez	mauricio@hotmail.com	Mauricio123@	Activo	2025-07-22
 \.
 
 
@@ -643,8 +660,9 @@ COPY public."UsuarioMateria" ("idUsuMat", "idUsuario", "idMateria", estado, "fec
 2	1	5	Activo	2025-07-22
 3	1	2	Activo	2025-07-22
 4	1	3	Activo	2025-07-22
-6	1	4	Activo	2025-07-22
 7	3	1	Activo	2025-07-22
+8	1	4	Activo	2025-07-22
+9	7	1	Activo	2025-07-22
 \.
 
 
@@ -654,7 +672,7 @@ COPY public."UsuarioMateria" ("idUsuMat", "idUsuario", "idMateria", estado, "fec
 -- Name: Apunte_idApunte_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Apunte_idApunte_seq"', 7, true);
+SELECT pg_catalog.setval('public."Apunte_idApunte_seq"', 10, true);
 
 
 --
@@ -663,7 +681,7 @@ SELECT pg_catalog.setval('public."Apunte_idApunte_seq"', 7, true);
 -- Name: Contenido_idContenido_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Contenido_idContenido_seq"', 10, true);
+SELECT pg_catalog.setval('public."Contenido_idContenido_seq"', 16, true);
 
 
 --
@@ -681,7 +699,7 @@ SELECT pg_catalog.setval('public."Materia_idMateria_seq"', 5, true);
 -- Name: Recordatorio_idRecordatorio_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Recordatorio_idRecordatorio_seq"', 5, true);
+SELECT pg_catalog.setval('public."Recordatorio_idRecordatorio_seq"', 7, true);
 
 
 --
@@ -690,7 +708,7 @@ SELECT pg_catalog.setval('public."Recordatorio_idRecordatorio_seq"', 5, true);
 -- Name: Tema_idTema_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Tema_idTema_seq"', 15, true);
+SELECT pg_catalog.setval('public."Tema_idTema_seq"', 27, true);
 
 
 --
@@ -699,7 +717,7 @@ SELECT pg_catalog.setval('public."Tema_idTema_seq"', 15, true);
 -- Name: UsuarioMateria_idUsuMat_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."UsuarioMateria_idUsuMat_seq"', 7, true);
+SELECT pg_catalog.setval('public."UsuarioMateria_idUsuMat_seq"', 9, true);
 
 
 --
@@ -708,7 +726,7 @@ SELECT pg_catalog.setval('public."UsuarioMateria_idUsuMat_seq"', 7, true);
 -- Name: Usuario_idUsuario_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Usuario_idUsuario_seq"', 3, true);
+SELECT pg_catalog.setval('public."Usuario_idUsuario_seq"', 7, true);
 
 
 --
@@ -902,7 +920,7 @@ ALTER TABLE ONLY public."UsuarioMateria"
     ADD CONSTRAINT "idUsuario" FOREIGN KEY ("idUsuario") REFERENCES public."Usuario"("idUsuario") ON DELETE CASCADE;
 
 
--- Completed on 2025-07-22 08:49:11
+-- Completed on 2025-07-23 11:13:52
 
 --
 -- PostgreSQL database dump complete
