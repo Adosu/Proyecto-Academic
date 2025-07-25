@@ -5,7 +5,7 @@
 -- Dumped from database version 17.4
 -- Dumped by pg_dump version 17.4
 
--- Started on 2025-07-23 11:13:52
+-- Started on 2025-07-24 23:12:22
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -545,8 +545,9 @@ COPY public."Apunte" ("idApunte", "idUsuMat", fecha, titulo, resumen) FROM stdin
 6	1	2025-07-22	Funciones	
 7	7	2025-07-22	Apunte de ejemplo	
 8	2	2025-07-22	Direcciones IP y Subnetting	
-9	1	2025-07-22	Apunte3	
 10	9	2025-07-22	Apunte 1	
+13	11	2025-07-23	Apunte 1	
+12	11	2025-07-23	Apunte 2	Una base de datos es una colección organizada de datos, típicamente almacenada electrónicamente en un sistema informático, que permite un acceso eficiente y seguro a la información. Funciona como un sistema para almacenar, recuperar y manipular datos, utilizando un sistema de gestión de bases de datos (DBMS). Las bases de datos son fundamentales para la gestión de la información en diversas aplicaciones, desde pequeñas empresas hasta grandes organizaciones.
 \.
 
 
@@ -565,6 +566,9 @@ COPY public."Contenido" ("idContenido", "idTema", texto) FROM stdin;
 13	20	Permite dividir redes grandes en subredes más pequeñas (ejemplo: 255.255.255.0)
 14	21	Representación de subredes con barra diagonal (ejemplo: 192.168.1.0/24)
 1	6	Una tabla representa una relación.
+18	28	Contenido 2
+17	28	Contenidoasdasdasdsadad<SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSaaaa\nasdsdasd
+19	36	Contenido
 2	7	Una fila (tupla) representa un registro.
 3	8	Una columna (atributo) representa una propiedad del registro.
 4	5	En bases de datos, una clave primaria identifica de forma única cada registro en una tabla, mientras que una clave secundaria es una columna o conjunto de columnas que hacen referencia a la clave primaria de otra tabla
@@ -600,7 +604,6 @@ COPY public."Recordatorio" ("idRecordatorio", "idUsuario", "fechaLimite", titulo
 3	1	2025-07-16	Prueba  BD		Vencido	2025-07-22	09:30
 4	1	2025-07-10	Prueba TW		Vencido	2025-07-22	08:40
 5	3	2025-07-24	Recordatorio de ejemplo	Descripción de ejemplo	Activo	2025-07-22	12:40
-7	1	2025-07-23	Prueba  BD		Activo	2025-07-22	10:09
 \.
 
 
@@ -611,7 +614,6 @@ COPY public."Recordatorio" ("idRecordatorio", "idUsuario", "fechaLimite", titulo
 --
 
 COPY public."Tema" ("idTema", "idApunte", "idTemaPadre", nombre) FROM stdin;
-1	1	\N	Modelo Relacional
 2	1	\N	Normalización
 3	1	\N	Lenguaje SQL
 4	1	1	Tablas, Filas y Columnas
@@ -632,6 +634,16 @@ COPY public."Tema" ("idTema", "idApunte", "idTemaPadre", nombre) FROM stdin;
 21	8	17	CIDR
 23	10	\N	Tema 2
 24	10	\N	Tema 3
+28	12	\N	Tema 1
+29	12	\N	Tema 2
+30	12	\N	Tema 3
+31	12	28	Subtema 1
+32	12	28	Subtema 2
+33	12	28	Subtema 3
+34	12	31	Sub-Subtema 1
+35	12	31	Sub-Subtema 2
+1	1	\N	Modelo Relacional
+36	1	1	Subtitulo 1
 \.
 
 
@@ -646,6 +658,8 @@ COPY public."Usuario" ("idUsuario", nombre, apellido, correo, contrasena, estado
 2	Jimmy Fernando	Carchipulla Camacho	jimmycarchipulla4523@gmail.com	Jimmy123@	Activo	2025-07-22
 3	Anthony	Murillo	murillo@hotmail.com	Murillo123@	Activo	2025-07-22
 7	Mauricio	Perez	mauricio@hotmail.com	Mauricio123@	Activo	2025-07-22
+8	Andy	Aguirre	andyaguirre12@gmail.com	Andyaguirre1.	Activo	2025-07-23
+9	Juan	Perez	juan@hotmail.com	Juan123@	Activo	2025-07-25
 \.
 
 
@@ -663,6 +677,7 @@ COPY public."UsuarioMateria" ("idUsuMat", "idUsuario", "idMateria", estado, "fec
 7	3	1	Activo	2025-07-22
 8	1	4	Activo	2025-07-22
 9	7	1	Activo	2025-07-22
+11	8	1	Activo	2025-07-23
 \.
 
 
@@ -672,7 +687,7 @@ COPY public."UsuarioMateria" ("idUsuMat", "idUsuario", "idMateria", estado, "fec
 -- Name: Apunte_idApunte_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Apunte_idApunte_seq"', 10, true);
+SELECT pg_catalog.setval('public."Apunte_idApunte_seq"', 13, true);
 
 
 --
@@ -681,7 +696,7 @@ SELECT pg_catalog.setval('public."Apunte_idApunte_seq"', 10, true);
 -- Name: Contenido_idContenido_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Contenido_idContenido_seq"', 16, true);
+SELECT pg_catalog.setval('public."Contenido_idContenido_seq"', 19, true);
 
 
 --
@@ -699,7 +714,7 @@ SELECT pg_catalog.setval('public."Materia_idMateria_seq"', 5, true);
 -- Name: Recordatorio_idRecordatorio_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Recordatorio_idRecordatorio_seq"', 7, true);
+SELECT pg_catalog.setval('public."Recordatorio_idRecordatorio_seq"', 8, true);
 
 
 --
@@ -708,7 +723,7 @@ SELECT pg_catalog.setval('public."Recordatorio_idRecordatorio_seq"', 7, true);
 -- Name: Tema_idTema_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Tema_idTema_seq"', 27, true);
+SELECT pg_catalog.setval('public."Tema_idTema_seq"', 36, true);
 
 
 --
@@ -717,7 +732,7 @@ SELECT pg_catalog.setval('public."Tema_idTema_seq"', 27, true);
 -- Name: UsuarioMateria_idUsuMat_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."UsuarioMateria_idUsuMat_seq"', 9, true);
+SELECT pg_catalog.setval('public."UsuarioMateria_idUsuMat_seq"', 11, true);
 
 
 --
@@ -726,7 +741,7 @@ SELECT pg_catalog.setval('public."UsuarioMateria_idUsuMat_seq"', 9, true);
 -- Name: Usuario_idUsuario_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Usuario_idUsuario_seq"', 7, true);
+SELECT pg_catalog.setval('public."Usuario_idUsuario_seq"', 9, true);
 
 
 --
@@ -920,7 +935,7 @@ ALTER TABLE ONLY public."UsuarioMateria"
     ADD CONSTRAINT "idUsuario" FOREIGN KEY ("idUsuario") REFERENCES public."Usuario"("idUsuario") ON DELETE CASCADE;
 
 
--- Completed on 2025-07-23 11:13:52
+-- Completed on 2025-07-24 23:12:22
 
 --
 -- PostgreSQL database dump complete
